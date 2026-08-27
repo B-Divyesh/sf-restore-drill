@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Restore Drill privacy policy: the CLI is local-only and the site stores only your Team Kit license state.">
+    <meta name="theme-color" content="#f3ebd7">
+    <title>Privacy — Restore Drill</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <main id="main" class="legal-page">
+      <a class="back-link" href="/">← Restore Drill</a>
+      <p class="eyebrow">Policy / effective 27 August 2026</p>
+      <h1>Privacy, in plain terms.</h1>
+      <p>Restore Drill is designed to keep operational data on your machine. The CLI has no telemetry and makes no network request except the Docker image operations you ask Docker to perform.</p>
+
+      <h2>What the CLI handles</h2>
+      <p>The CLI reads the backup, configuration, and credential files you name. It sends them only to your local Docker engine for the isolated drill. Reports and signing keys are written locally. Restore Drill does not upload their contents, filenames, assertions, hashes, or results to Sociobot.</p>
+
+      <h2>What this site stores</h2>
+      <p>The free docs use no analytics cookies and send no tracking events. If you provide a Team Kit license, the token and its last verification verdict are stored in your browser's local storage. You can clear them at any time through your browser's site-data controls.</p>
+
+      <h2>Purchase and verification</h2>
+      <p>Sociobot/Dodo is the merchant of record. Checkout and license verification are handled by <code>api.sociobot.in</code>. The billing service processes the purchase details needed for payment, tax, fraud prevention, refunds, and license delivery under its own transaction records. Restore Drill receives only the license token returned after checkout.</p>
+
+      <h2>Offline cache</h2>
+      <p>A service worker may cache the public documentation, illustration, and legal pages on this device so they remain readable offline. It contains no backup, config, report, or credential data.</p>
+
+      <h2>Your choices</h2>
+      <p>You can use every safety feature of the CLI without an account or purchase. You can remove cached pages and license state from your browser at any time. For privacy requests concerning a purchase, use the contact address on your Sociobot receipt.</p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "restore-drill-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config site/vite.config.ts",
+    "build:cli": "cargo build --release --workspace && node scripts/copy-binary.mjs",
+    "build:site": "vite build --config site/vite.config.ts",
+    "build": "npm run clean && npm run build:cli && npm run build:site",
+    "clean": "node scripts/clean.mjs",
+    "test:site": "playwright test",
+    "test": "cargo test --workspace && npm run test:site"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.58.2",
+    "vite": "7.3.6"
+  }
+}

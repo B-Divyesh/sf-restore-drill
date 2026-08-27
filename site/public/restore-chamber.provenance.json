@@ -1,0 +1,10 @@
+{
+  "asset": "restore-chamber.webp",
+  "generator": "/opt/fleet/lib/gen-image.sh",
+  "deployment": "factory-image",
+  "generated_size": "1536x1024",
+  "published_size": "1280x853",
+  "quality": "high",
+  "generated_on": "2026-08-27",
+  "prompt": "Use case: stylized-concept. Asset type: landing page hero illustration. Primary request: a wide editorial cutaway of a sealed backup archive descending through an isolated cylindrical test chamber and emerging as a healthy database stack. Scene/backdrop: uncoated warm paper field with subtle registration marks. Style/medium: 1950s technical manual screen print, coarse two-color halftone dots, analog ink imperfections, precise mechanical cutaway. Composition/framing: wide landscape, main chamber weighted to the right with calm negative space, clearly readable silhouette at mobile crop. Lighting/mood: sober, inspectable, resilient. Color palette: warm cream paper, near-black forest green ink, restrained vermilion red. Constraints: no words, no letters, no numbers, no logos, no watermark, no glossy 3D, no gradients."
+}

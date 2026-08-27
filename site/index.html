@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Restore Drill proves your Postgres backup restores by rehearsing recovery in a disposable Docker network, probing the result, and signing the evidence.">
+    <meta name="theme-color" content="#f3ebd7">
+    <title>Restore Drill — proof your Postgres backup restores</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%2313231d'/%3E%3Cpath d='M8 11h16v4H8zm2 7h12v4H10z' fill='%23f3ebd7'/%3E%3C/svg%3E">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Restore Drill home"><span class="brand-mark" aria-hidden="true">RD</span><span>Restore Drill</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="#how">How it works</a>
+        <a href="#proof">Evidence</a>
+        <a class="nav-buy" href="#team-kit">Team Kit · $39</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span>Restore verification / v0.1</p>
+          <h1 id="hero-title">A backup is a promise. <em>Test the restore.</em></h1>
+          <p class="lede">Restore a Postgres dump or volume into a disposable Docker network, probe the database and app, then keep signed proof it worked.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#install">Install the CLI</a>
+            <button class="button secondary" type="button" data-demo="healthy">Run a 12-second preview</button>
+          </div>
+          <p class="safety-note"><span aria-hidden="true">⊘</span> Internal network required. Production hosts rejected.</p>
+        </div>
+        <figure class="hero-art">
+          <span class="plate-label">Plate 01 / isolated rehearsal</span>
+          <img src="/restore-chamber.webp" width="1280" height="853" alt="Technical cutaway showing a sealed backup entering an isolated test chamber and emerging as a healthy database" fetchpriority="high">
+          <figcaption>Backup artifact in. Measured recovery evidence out.</figcaption>
+        </figure>
+      </section>
+
+      <section class="demo-band" aria-labelledby="demo-title">
+        <div class="section-number" aria-hidden="true">01</div>
+        <div class="demo-intro">
+          <p class="eyebrow">Recorded drill / local simulation</p>
+          <h2 id="demo-title">Watch the proof assemble.</h2>
+          <p>This preview uses no server and touches no data. The real CLI records the same checkpoints from Docker.</p>
+          <button class="text-button" type="button" data-demo="broken">Try a broken backup <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="drill-console" aria-label="Restore drill preview">
+          <div class="console-head"><span>weekly-orders</span><span id="demo-state" class="state idle">Ready</span></div>
+          <ol id="demo-log" class="demo-log">
+            <li><span class="log-mark">○</span><span>Artifact hash</span><code>waiting</code></li>
+            <li><span class="log-mark">○</span><span>Isolated restore</span><code>waiting</code></li>
+            <li><span class="log-mark">○</span><span>SQL assertions</span><code>waiting</code></li>
+            <li><span class="log-mark">○</span><span>HTTP probe</span><code>waiting</code></li>
+            <li><span class="log-mark">○</span><span>Signed report</span><code>waiting</code></li>
+          </ol>
+          <p id="demo-live" class="sr-only" aria-live="polite"></p>
+          <div class="console-foot"><span>RTO</span><strong id="demo-rto">—</strong><span>SHA-256</span><code id="demo-hash">—</code></div>
+        </div>
+      </section>
+
+      <section id="how" class="method" aria-labelledby="method-title">
+        <p class="eyebrow">The drill boundary</p>
+        <h2 id="method-title">Small enough for cron. Strict enough to trust.</h2>
+        <ol class="method-list">
+          <li><span class="method-index">01</span><div><h3>Seal the room</h3><p>Pull images first, then create a new Docker <code>--internal</code> network. Existing networks and undeclared HTTP hosts are refused.</p></div></li>
+          <li><span class="method-index">02</span><div><h3>Restore the artifact</h3><p>Load a plain/custom Postgres dump or a validated volume tar. The original stays read-only; secrets stay in local env files.</p></div></li>
+          <li><span class="method-index">03</span><div><h3>Probe usability</h3><p>Run exact SQL expectations and app-level HTTP probes from inside the isolated network—not against production.</p></div></li>
+          <li><span class="method-index">04</span><div><h3>Sign and clear</h3><p>Write hashes, image IDs, outcomes, and recovery time to Ed25519-signed JSON; remove containers, volume, and network.</p></div></li>
+        </ol>
+      </section>
+
+      <section id="install" class="install" aria-labelledby="install-title">
+        <div>
+          <p class="eyebrow">Install / Linux x86-64</p>
+          <h2 id="install-title">One binary. Your Docker engine.</h2>
+          <p>Build from source today. Release binaries are attached to tagged GitHub releases.</p>
+        </div>
+        <div class="command-block">
+          <code id="install-command">cargo install --git https://github.com/B-Divyesh/sf-restore-drill</code>
+          <button type="button" id="copy-command" aria-label="Copy install command">Copy</button>
+        </div>
+        <div class="install-links"><a href="https://github.com/B-Divyesh/sf-restore-drill">Read the source</a><a href="https://github.com/B-Divyesh/sf-restore-drill#usage">Open the runbook</a></div>
+      </section>
+
+      <section id="proof" class="proof" aria-labelledby="proof-title">
+        <div class="proof-copy">
+          <p class="eyebrow">Evidence, not optimism</p>
+          <h2 id="proof-title">Know the recovery time before the incident.</h2>
+          <p>A signed local report ties the exact artifact to the images, probes, and elapsed time used in the rehearsal. Verify it later without a service account.</p>
+        </div>
+        <dl class="evidence-slip">
+          <div><dt>Status</dt><dd class="verified"><span aria-hidden="true">●</span> Passed</dd></div>
+          <div><dt>Recovery time</dt><dd>02m 41.382s</dd></div>
+          <div><dt>Artifact</dt><dd>latest.dump · 8.4 GB</dd></div>
+          <div><dt>SHA-256</dt><dd><code>8d71…c204</code></dd></div>
+          <div><dt>Assertions</dt><dd>7 / 7 passed</dd></div>
+          <div><dt>Signature</dt><dd>Ed25519 · valid</dd></div>
+        </dl>
+      </section>
+
+      <section id="team-kit" class="team-kit" aria-labelledby="kit-title">
+        <div class="stamp" aria-hidden="true">TEAM<br>KIT</div>
+        <div class="kit-copy">
+          <p class="eyebrow">One-time operator upgrade</p>
+          <h2 id="kit-title">Turn a command into a recovery habit.</h2>
+          <p class="kit-price"><strong>$39</strong> once · yours for every environment your team operates</p>
+          <ul>
+            <li>Ready-to-edit GitHub Actions and cron schedules</li>
+            <li>Four-week recovery scorecard template</li>
+            <li>Failure injection and retention checklist</li>
+            <li>All future Team Kit revisions</li>
+          </ul>
+          <p>The core CLI, signed reports, safety checks, and JSON export stay free.</p>
+          <div class="kit-actions">
+            <a class="button primary" href="https://api.sociobot.in/api/v1/products/restore-drill/checkout">Buy the Team Kit · $39</a>
+            <button class="button secondary" id="show-license" type="button" aria-expanded="false" aria-controls="license-form">Have a license?</button>
+          </div>
+          <form id="license-form" class="license-form" hidden>
+            <label for="license-token">Paste your license token</label>
+            <div><input id="license-token" name="license" type="text" autocomplete="off" spellcheck="false" required><button type="submit">Verify license</button></div>
+          </form>
+          <p id="license-status" class="license-status" role="status" aria-live="polite">No license stored on this device.</p>
+          <div id="kit-downloads" class="kit-downloads" hidden>
+            <p><strong>Team Kit unlocked.</strong> Generate each template locally:</p>
+            <button type="button" data-download="workflow">Download CI workflow</button>
+            <button type="button" data-download="scorecard">Download scorecard</button>
+            <button type="button" data-download="checklist">Download drill checklist</button>
+          </div>
+          <p class="legal-note">Sociobot/Dodo is the merchant of record. Refunds are handled there and revoke the license. <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p>
+        </div>
+      </section>
+    </main>
+
+    <aside id="offline-note" class="offline-note" role="status" hidden>Offline. The docs and last verified Team Kit license remain available on this device.</aside>
+    <footer><p><span>Restore Drill</span> · Recovery proof for self-hosters.</p><nav aria-label="Footer"><a href="https://github.com/B-Divyesh/sf-restore-drill">GitHub</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav></footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
