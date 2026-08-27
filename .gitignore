@@ -1,6 +1,9 @@
-node_modules/
-dist/
-.env
-*.log
-graphify-out/
-.DS_Store
+/target/
+/node_modules/
+/dist/
+/playwright-report/
+/test-results/
+/output/imagegen/*.png
+/output/imagegen/*.png.json
+.restore-drill/
+.restore-drill.env

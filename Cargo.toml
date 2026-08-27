@@ -1,0 +1,9 @@
+[workspace]
+members = ["crates/restore-drill"]
+resolver = "2"
+
+[profile.release]
+strip = true
+lto = "thin"
+codegen-units = 1
+
