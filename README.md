@@ -104,11 +104,13 @@ Reports include recovery duration, assertion evidence, the SHA-256 backup hash,
 the resolved image IDs, and an Ed25519 signature. Verify a report later with:
 
 ```sh
-restore-drill verify .restore-drill/reports/weekly-orders-2026-08-27T120000Z.json
+restore-drill verify .restore-drill/reports/weekly-orders-2026-08-27T120000Z.json \
+  --public-key .restore-drill/signing.key.pub
 ```
 
-The public key is saved beside the signing key as `signing.key.pub`; back it up
-separately if the evidence needs independent verification.
+The public key is saved beside the signing key as `signing.key.pub`. Retain it
+separately and pass `--public-key` for independent signer verification; without
+that option, `verify` checks only that the report is internally intact.
 
 ## Scheduling
 

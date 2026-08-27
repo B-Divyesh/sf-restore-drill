@@ -1,0 +1,154 @@
+use assert_cmd::Command;
+use predicates::prelude::*;
+use serde_json::Value;
+use std::fs;
+
+#[test]
+fn help_describes_the_real_workflow() {
+    Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
+        .arg("--help")
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("isolated Docker network"))
+        .stdout(predicate::str::contains("run"))
+        .stdout(predicate::str::contains("verify"));
+}
+
+#[test]
+fn init_is_non_destructive() {
+    let dir = tempfile::tempdir().unwrap();
+    let config = dir.path().join("restore-drill.toml");
+    Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
+        .args(["init", "--output"])
+        .arg(&config)
+        .assert()
+        .success();
+    assert!(config.exists());
+    assert!(dir.path().join(".restore-drill.env").exists());
+    Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
+        .args(["init", "--output"])
+        .arg(&config)
+        .assert()
+        .code(2)
+        .stderr(predicate::str::contains("already exists"));
+}
+
+#[cfg(unix)]
+#[test]
+fn run_completes_with_a_docker_compatible_engine_and_verifies_report() {
+    use std::os::unix::fs::PermissionsExt;
+    let dir = tempfile::tempdir().unwrap();
+    fs::write(
+        dir.path().join("backup.sql"),
+        "CREATE TABLE proof(id int);\n",
+    )
+    .unwrap();
+    let secret = dir.path().join("secret.env");
+    fs::write(&secret, "POSTGRES_PASSWORD=test-only\n").unwrap();
+    fs::set_permissions(&secret, fs::Permissions::from_mode(0o600)).unwrap();
+    fs::write(
+        dir.path().join("drill.toml"),
+        r#"version = 1
+[drill]
+name = "test-drill"
+network = "restore-drill-test"
+timeout_seconds = 20
+report_dir = "reports"
+signing_key = "signing.key"
+[postgres]
+image = "postgres:16-alpine"
+container = "restore-drill-db"
+database = "app"
+user = "restore_drill"
+credential_file = "secret.env"
+[source]
+kind = "dump"
+path = "backup.sql"
+format = "plain"
+[[assertions.sql]]
+name = "database responds"
+query = "SELECT 1"
+expect = "1"
+"#,
+    )
+    .unwrap();
+    let fake = dir.path().join("docker");
+    let docker_log = dir.path().join("docker.log");
+    fs::write(
+        &fake,
+        r#"#!/bin/sh
+printf '%s\n' "$*" >> "$FAKE_DOCKER_LOG"
+case " $* " in
+  *" image inspect "*) printf 'sha256:test-image-id\n' ;;
+  *" exec restore-drill-db psql "*" -f "*)
+    if [ "${FAKE_FAIL_RESTORE:-}" = "1" ]; then printf 'broken archive\n' >&2; exit 1; fi ;;
+  *" exec restore-drill-db psql "*" -c "*) printf '1\n' ;;
+  *) printf 'ok\n' ;;
+esac
+exit 0
+"#,
+    )
+    .unwrap();
+    let mut permissions = fs::metadata(&fake).unwrap().permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(&fake, permissions).unwrap();
+
+    let output = Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
+        .arg("--docker")
+        .arg(&fake)
+        .args(["run", "--config"])
+        .arg(dir.path().join("drill.toml"))
+        .arg("--json")
+        .env("FAKE_DOCKER_LOG", &docker_log)
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let report: Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(report["status"], "passed");
+    assert_eq!(report["assertions"][0]["observed"], "1");
+    assert_eq!(
+        report["images"]["postgres:16-alpine"],
+        "sha256:test-image-id"
+    );
+
+    let report_path = fs::read_dir(dir.path().join("reports"))
+        .unwrap()
+        .next()
+        .unwrap()
+        .unwrap()
+        .path();
+    Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
+        .args(["verify"])
+        .arg(report_path)
+        .arg("--public-key")
+        .arg(dir.path().join("signing.key.pub"))
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("signature valid"));
+
+    let commands = fs::read_to_string(&docker_log).unwrap();
+    assert!(commands.contains("network create --internal"));
+    assert!(commands.contains("--env-file"));
+    assert!(commands.contains("rm -f restore-drill-db"));
+    assert!(commands.contains("volume rm -f"));
+    assert!(commands.contains("network rm restore-drill-test"));
+
+    let broken = Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
+        .arg("--docker")
+        .arg(&fake)
+        .args(["run", "--config"])
+        .arg(dir.path().join("drill.toml"))
+        .arg("--json")
+        .env("FAKE_DOCKER_LOG", &docker_log)
+        .env("FAKE_FAIL_RESTORE", "1")
+        .output()
+        .unwrap();
+    assert_eq!(broken.status.code(), Some(1));
+    let failed: Value = serde_json::from_slice(&broken.stdout).unwrap();
+    assert_eq!(failed["status"], "failed");
+    assert!(failed["error"].as_str().unwrap().contains("broken archive"));
+}

@@ -302,6 +302,15 @@ impl<'a> DrillRun<'a> {
     fn extract_volume(&self, volume: &str) -> Result<(), String> {
         let path = fs::canonicalize(&self.config.source.path)
             .map_err(|e| format!("could not resolve volume archive: {e}"))?;
+        let tar_flag = if path
+            .extension()
+            .and_then(|value| value.to_str())
+            .is_some_and(|value| value == "gz" || value == "tgz")
+        {
+            "-xzf"
+        } else {
+            "-xf"
+        };
         let args = vec![
             "run".into(),
             "--rm".into(),
@@ -313,7 +322,7 @@ impl<'a> DrillRun<'a> {
             format!("{volume}:/data"),
             ALPINE_IMAGE.into(),
             "tar".into(),
-            "-xf".into(),
+            tar_flag.into(),
             "/backup/archive".into(),
             "-C".into(),
             "/data".into(),

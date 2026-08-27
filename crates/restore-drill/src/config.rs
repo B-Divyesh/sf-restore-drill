@@ -297,14 +297,31 @@ fn validate_env_file(path: &Path, postgres: bool) -> Result<(), String> {
     let raw = fs::read_to_string(path)
         .map_err(|e| format!("could not read credential file {}: {e}", path.display()))?;
     if postgres
-        && !raw
-            .lines()
-            .any(|line| line.trim_start().starts_with("POSTGRES_PASSWORD="))
+        && !raw.lines().any(|line| {
+            line.trim_start()
+                .strip_prefix("POSTGRES_PASSWORD=")
+                .is_some_and(|value| !value.trim().is_empty())
+        })
     {
         return Err(format!(
-            "credential file {} must define POSTGRES_PASSWORD",
+            "credential file {} must define a non-empty POSTGRES_PASSWORD",
             path.display()
         ));
+    }
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let mode = fs::metadata(path)
+            .map_err(|e| format!("could not inspect credential file {}: {e}", path.display()))?
+            .permissions()
+            .mode();
+        if mode & 0o077 != 0 {
+            return Err(format!(
+                "credential file {} is readable by other users; run chmod 600 {}",
+                path.display(),
+                path.display()
+            ));
+        }
     }
     Ok(())
 }
@@ -332,6 +349,9 @@ fn validate_tar(path: &Path) -> Result<(), String> {
         if entry_type.is_symlink() || entry_type.is_hard_link() {
             return Err("volume archive may not contain links".into());
         }
+        if !entry_type.is_file() && !entry_type.is_dir() {
+            return Err("volume archive may contain only regular files and directories".into());
+        }
         let p = entry
             .path()
             .map_err(|e| format!("invalid archive path: {e}"))?;
@@ -357,9 +377,14 @@ mod tests {
     use std::io::Write;
 
     fn fixture(http_url: &str) -> (tempfile::TempDir, PathBuf) {
+        #[cfg(unix)]
+        use std::os::unix::fs::PermissionsExt;
         let dir = tempfile::tempdir().unwrap();
         fs::write(dir.path().join("backup.sql"), "select 1;").unwrap();
-        fs::write(dir.path().join("secret.env"), "POSTGRES_PASSWORD=test\n").unwrap();
+        let secret = dir.path().join("secret.env");
+        fs::write(&secret, "POSTGRES_PASSWORD=test\n").unwrap();
+        #[cfg(unix)]
+        fs::set_permissions(&secret, fs::Permissions::from_mode(0o600)).unwrap();
         let config = format!(
             r#"version=1
 [drill]

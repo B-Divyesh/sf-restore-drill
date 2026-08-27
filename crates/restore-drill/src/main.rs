@@ -60,6 +60,9 @@ enum Commands {
     /// Verify that a report has not been altered
     Verify {
         report: PathBuf,
+        /// Compare the embedded signer with a separately retained public key
+        #[arg(long)]
+        public_key: Option<PathBuf>,
         #[arg(long)]
         json: bool,
     },
@@ -87,7 +90,13 @@ fn real_main() -> Result<u8, (u8, String)> {
             json,
             keep_on_failure,
         } => run(&cli.docker, &config, json, keep_on_failure),
-        Commands::Verify { report, json } => verify(&report, json).map(|_| 0).map_err(|e| (1, e)),
+        Commands::Verify {
+            report,
+            public_key,
+            json,
+        } => verify(&report, public_key.as_deref(), json)
+            .map(|_| 0)
+            .map_err(|e| (1, e)),
     }
 }
 
@@ -109,7 +118,17 @@ fn init(output: &Path, force: bool) -> Result<(), String> {
         .unwrap_or_else(|| Path::new("."))
         .join(".restore-drill.env");
     if !env.exists() {
-        fs::write(&env, DEFAULT_ENV)
+        let mut options = fs::OpenOptions::new();
+        options.write(true).create_new(true);
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::OpenOptionsExt;
+            options.mode(0o600);
+        }
+        use std::io::Write;
+        options
+            .open(&env)
+            .and_then(|mut file| file.write_all(DEFAULT_ENV.as_bytes()))
             .map_err(|e| format!("could not write {}: {e}", env.display()))?;
     }
     println!("Wrote {} and {}", output.display(), env.display());
@@ -185,17 +204,25 @@ fn run(
     let mut error = outcome.err();
     if error.is_some() && keep_on_failure {
         drill.retain();
-        eprintln!(
-            "restore-drill: keeping isolated resources: {}",
-            drill.resources()
-        );
+        let resources = drill.resources();
+        eprintln!("restore-drill: keeping isolated resources: {resources}");
+        error = error.map(|message| format!("{message}; isolated resources retained: {resources}"));
     }
     let cleanup_errors = drill.cleanup();
     if !cleanup_errors.is_empty() {
-        error = Some(format!(
-            "cleanup was incomplete: {}",
-            cleanup_errors.join("; ")
-        ));
+        let cleanup = format!("cleanup was incomplete: {}", cleanup_errors.join("; "));
+        error = Some(error.map_or(cleanup.clone(), |message| format!("{message}; {cleanup}")));
+    }
+    match hash_file(&config.source.path) {
+        Ok((after_hash, after_bytes)) if after_hash != sha256 || after_bytes != bytes => {
+            let changed = "backup source changed while the drill was running".to_string();
+            error = Some(error.map_or(changed.clone(), |message| format!("{message}; {changed}")));
+        }
+        Err(hash_error) => {
+            let changed = format!("could not re-check backup after the drill: {hash_error}");
+            error = Some(error.map_or(changed.clone(), |message| format!("{message}; {changed}")));
+        }
+        _ => {}
     }
     let finished_at = Utc::now();
     let mut report = Report {
@@ -263,8 +290,15 @@ fn run(
     Ok(if report.status == "passed" { 0 } else { 1 })
 }
 
-fn verify(path: &Path, json: bool) -> Result<(), String> {
+fn verify(path: &Path, public_key: Option<&Path>, json: bool) -> Result<(), String> {
     let report = report::read_and_verify(path)?;
+    if let Some(path) = public_key {
+        let expected = fs::read_to_string(path)
+            .map_err(|e| format!("could not read public key {}: {e}", path.display()))?;
+        if expected.trim() != report.public_key {
+            return Err("report was signed by a different key".into());
+        }
+    }
     if json {
         println!(
             "{}",

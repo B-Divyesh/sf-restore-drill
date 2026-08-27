@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config site/vite.config.ts",
+    "preview": "vite preview --config site/vite.config.ts",
     "build:cli": "cargo build --release --workspace && node scripts/copy-binary.mjs",
     "build:site": "vite build --config site/vite.config.ts",
     "build": "npm run clean && npm run build:cli && npm run build:site",

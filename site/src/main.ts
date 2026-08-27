@@ -110,13 +110,14 @@ function setupLicense() {
   const returned = params.get('license');
   if (returned) {
     localStorage.setItem(LICENSE_KEY, returned);
+    localStorage.removeItem(VERDICT_KEY);
     params.delete('license');
     history.replaceState({}, '', `${location.pathname}${params.size ? `?${params}` : ''}${location.hash}`);
   }
   const token = returned || localStorage.getItem(LICENSE_KEY);
   const cached = storedVerdict();
   if (cached?.valid) showUnlocked(true);
-  if (token) void verifyLicense(token);
+  if (token) void verifyLicense(token, Boolean(returned));
 
   const toggle = $('#show-license') as HTMLButtonElement | null;
   const form = $('#license-form') as HTMLFormElement | null;

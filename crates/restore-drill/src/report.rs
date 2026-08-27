@@ -9,6 +9,7 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Evidence {
     pub name: String,
     pub kind: String,
@@ -19,6 +20,7 @@ pub struct Evidence {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ArtifactEvidence {
     pub file_name: String,
     pub kind: String,
@@ -27,6 +29,7 @@ pub struct ArtifactEvidence {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Report {
     pub schema: String,
     pub drill: String,
@@ -59,12 +62,21 @@ impl Report {
         self.signature = STANDARD.encode(key.sign(&self.signing_bytes()?).to_bytes());
         fs::create_dir_all(report_dir)
             .map_err(|e| format!("could not create report directory: {e}"))?;
-        let stamp = self.finished_at.format("%Y-%m-%dT%H%M%SZ");
+        let stamp = self.finished_at.format("%Y-%m-%dT%H%M%S%.3fZ");
         let path = report_dir.join(format!("{}-{stamp}.json", self.drill));
         let content =
             serde_json::to_vec_pretty(self).map_err(|e| format!("could not encode report: {e}"))?;
-        fs::write(&path, content)
-            .map_err(|e| format!("could not write {}: {e}", path.display()))?;
+        fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&path)
+            .and_then(|mut file| file.write_all(&content))
+            .map_err(|e| {
+                format!(
+                    "could not create {} without overwriting evidence: {e}",
+                    path.display()
+                )
+            })?;
         Ok(path)
     }
 
