@@ -1,0 +1,12 @@
+{
+  "slug": "restore-drill",
+  "title": "Restore Drill",
+  "territory": "devtools-data",
+  "user": "A small team self-hosting Postgres and application data that needs recurring proof that a backup can restore into a usable isolated environment, not merely that a job completed.",
+  "smallest_useful_product": "A Docker-first CLI that restores a chosen Postgres dump/volume into an isolated network, runs configurable SQL/HTTP smoke assertions, records duration and artifact hashes, then tears it down.",
+  "success_measure": "A weekly drill succeeds unattended for four weeks and reports a measured recovery time; an intentionally broken backup is detected before the next scheduled drill.",
+  "artifact_class": "cli",
+  "monetization": "one-time",
+  "constraints": "Never target production endpoints; require an explicit disposable Docker network; protect dumps with local paths/credential files and securely delete temporary volumes where practical.",
+  "non_goals": ["Backup storage", "Production restores", "PITR orchestration", "General deployment management"]
+}
