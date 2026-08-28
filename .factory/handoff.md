@@ -1,4 +1,27 @@
-# Restore Drill polish 2 handoff
+# Restore Drill review 3 handoff
+
+## Review 3 outcome
+
+Adversarial review 3 is complete. No product code was changed. The result is
+**FAIL**. The registered `real-docker-restore` command fails in this sandbox
+because Docker is not installed, and the Privacy page's offline-reading promise
+is not registered as a claim. The review also records two small plain-language
+findings. See `.factory/review-3.md` for exact evidence and fixes.
+
+The review used fresh 390 px and 1440 px production contexts, a clean clone at
+`996c188fccf7ceae5772e9358862cb5cf597c4df`, and live evidence under
+`/tmp/restore-drill-review3-live`. `npm test`, `npm run build`, nine registered
+claim commands, and the live browser verifier passed. The failed command was:
+
+```sh
+cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored
+```
+
+It requires a Docker CLI and daemon. Provision that verification environment,
+register/tag the offline assertion, and resolve the two copy findings before a
+PASS review.
+
+## Prior polish 2 handoff (superseded by review 3)
 
 ## Outcome
 
@@ -128,4 +151,9 @@ npm run build:site
 
 ## Known gaps
 
-None.
+- The real-Docker claim did not run in the current review sandbox because no
+  Docker executable or daemon exists.
+- “A first-party service worker caches public site files for offline reading”
+  is an unlisted claim.
+- “Start for real” and “tamper-evident report” need the concrete copy rewrites
+  recorded in `.factory/review-3.md`.
