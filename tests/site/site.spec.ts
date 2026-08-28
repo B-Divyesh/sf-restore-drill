@@ -98,6 +98,27 @@ test('every route has complete route-specific metadata and product chrome', asyn
   }
 });
 
+test('every same-origin link and in-page target resolves', async ({ page, request, baseURL }) => {
+  const origin = new URL(baseURL || 'http://127.0.0.1:4173').origin;
+  const links = new Set<string>();
+  for (const [path] of routes) {
+    await page.goto(path);
+    for (const href of await page.locator('a[href]').evaluateAll(items => items.map(item => item.getAttribute('href') || ''))) {
+      const url = new URL(href, origin);
+      if (url.origin === origin) links.add(url.href);
+    }
+  }
+  for (const href of links) {
+    const url = new URL(href);
+    const response = await request.get(`${url.pathname}${url.search}`);
+    expect(response.status(), href).toBeLessThan(400);
+    if (url.hash) {
+      await page.goto(href);
+      await expect(page.locator(url.hash)).toHaveCount(1);
+    }
+  }
+});
+
 test('hash and document navigation move focus and announce context', async ({ page }) => {
   await page.goto('/#how');
   await expect(page.locator('#method-title')).toBeFocused();

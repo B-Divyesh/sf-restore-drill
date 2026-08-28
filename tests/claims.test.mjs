@@ -38,6 +38,10 @@ test('the scheduling examples preserve reports, failures, and credential boundar
   assert.match(workflow, /secrets\.RESTORE_DRILL_POSTGRES_PASSWORD/);
   assert.match(workflow, /if: always\(\)/);
   assert.match(workflow, /actions\/upload-artifact@v4/);
-  assert.doesNotMatch(workflow, /POSTGRES_PASSWORD=(?!\$)/);
+  assert.equal(
+    workflow.match(/^\s+POSTGRES_PASSWORD: (.+)$/m)?.[1],
+    '${{ secrets.RESTORE_DRILL_POSTGRES_PASSWORD }}'
+  );
+  assert.doesNotMatch(workflow, /replace-with|demo-only|test-only/);
   assert.doesNotMatch(workflow, /continue-on-error/);
 });
