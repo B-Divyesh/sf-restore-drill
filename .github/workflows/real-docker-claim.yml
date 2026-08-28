@@ -14,7 +14,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Run real Postgres restore claim
         env:
-          RESTORE_DRILL_CAPTURE_DIR: site/public/demo
+          RESTORE_DRILL_CAPTURE_DIR: ${{ github.workspace }}/site/public/demo
         run: cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored
       - uses: actions/upload-artifact@v4
         with:
