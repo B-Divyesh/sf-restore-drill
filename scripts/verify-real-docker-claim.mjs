@@ -32,6 +32,7 @@ function documentationOnlySince(commit) {
     .filter(Boolean);
   return changed.every(path =>
     path.startsWith('.factory/evidence/') ||
+    path === '.factory/copy-audit.md' ||
     /^\.factory\/(?:handoff|polish-[^/]+|review-[^/]+)\.md$/.test(path)
   );
 }

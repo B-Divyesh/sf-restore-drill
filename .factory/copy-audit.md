@@ -1,4 +1,4 @@
-# Restore Drill copy audit — polish 4
+# Restore Drill copy audit — polish 5
 
 Counts use visible alphanumeric words. Hyphenated terms and commands count as
 one word. No unit exceeds 22 words. No public copy uses a banned marketing word.
@@ -75,7 +75,17 @@ one word. No unit exceeds 22 words. No public copy uses a banned marketing word.
 README prose was read sentence by sentence. The longest sentence is 20 words.
 “Continuous integration” was replaced with “automation.” The report is called
 a “signed report file you can check later.” Install steps start with `git clone`
-and match the public `#install-from-source` link.
+and match the public `#install-from-source` link. The new release-gate sentences
+are 13, 12, and 13 words. No sentence uses a banned marketing word.
+
+## Catalog description
+
+| Words | Copy |
+| ---: | --- |
+| 10 | Prove a Postgres backup restores in a disposable Docker network. |
+
+The first screen reads aloud as one clear breath: prove the restore, for a
+small self-hosted team, by trying the sample data.
 
 ## Terminology
 
