@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Restore Drill helps small self-hosted teams rehearse a Postgres backup restore in an isolated Docker network.">
+    <meta name="theme-color" content="#f3ebd7">
+    <link rel="canonical" href="https://restore-drill.sociobot.in/">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Restore Drill — prove your Postgres backup restores">
+    <meta property="og:description" content="Rehearse a Postgres restore in an isolated Docker network.">
+    <meta property="og:image" content="https://restore-drill.sociobot.in/restore-drill-og.jpg">
+    <meta property="og:url" content="https://restore-drill.sociobot.in/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Restore Drill — prove your Postgres backup restores">
+    <meta name="twitter:description" content="Rehearse a Postgres restore in an isolated Docker network.">
+    <meta name="twitter:image" content="https://restore-drill.sociobot.in/restore-drill-og.jpg">
+    <title>Restore Drill — prove your Postgres backup restores</title>
+    <script type="module" crossorigin src="/assets/main-BOJG4hb_.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/style-CGLtCq0P.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Restore Drill home"><span class="brand-mark" aria-hidden="true">RD</span><span>Restore Drill</span></a>
+      <nav aria-label="Primary navigation"><a href="/demo/?demo=1">Demo</a><a href="#how">How it works</a><a href="/privacy/">Privacy</a></nav>
+    </header>
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span>Postgres restore rehearsal</p>
+          <h1 id="hero-title">Prove your Postgres backup restores.</h1>
+          <p class="lede">For small self-hosted teams that need recovery proof before an outage.</p>
+          <div class="hero-actions"><a class="button primary" href="/demo/?demo=1">Try it with sample data</a><span class="action-note">Opens a safe sample drill and its signed report.</span></div>
+          <ul class="plain-facts" aria-label="Key facts"><li>Runs with your local Docker engine</li><li>Sample files stay in a temporary directory</li><li>MIT-licensed command-line tool</li></ul>
+        </div>
+        <figure class="hero-art"><span class="plate-label">Plate 01 / isolated rehearsal</span><img src="/restore-chamber.webp" width="1280" height="853" alt="A sealed backup enters an isolated test chamber and emerges as a healthy database" fetchpriority="high"><figcaption>Sample backup in. Signed report out.</figcaption></figure>
+      </section>
+      <section id="how" class="method" aria-labelledby="method-title">
+        <p class="eyebrow">How the command works</p>
+        <h2 id="method-title">Run four checks before an outage.</h2>
+        <ol class="method-list">
+          <li><span class="method-index">01</span><div><h3>Create an isolated Docker network.</h3><p>The command uses a new internal network for the rehearsal.</p></div></li>
+          <li><span class="method-index">02</span><div><h3>Restore a shipped sample backup.</h3><p>The demo uses a SQL file with three sample orders in a temporary directory.</p></div></li>
+          <li><span class="method-index">03</span><div><h3>Check the restored data.</h3><p>The sample confirms that all three orders are present after the restore.</p></div></li>
+          <li><span class="method-index">04</span><div><h3>Sign the report and remove test resources.</h3><p>Keep the report path printed by the command for later inspection.</p></div></li>
+        </ol>
+      </section>
+      <section class="install" aria-labelledby="install-title">
+        <div><p class="eyebrow">Start for real</p><h2 id="install-title">Install one binary on your Docker host.</h2><p>Read the configuration before you run a drill against your own backup.</p></div>
+        <div class="command-block"><code>cargo install --path crates/restore-drill</code></div>
+        <div class="install-links"><a href="https://github.com/B-Divyesh/sf-restore-drill">Read the source (opens GitHub)</a><a href="https://github.com/B-Divyesh/sf-restore-drill#usage">Read the setup guide (opens GitHub)</a></div>
+      </section>
+      <section class="proof" aria-labelledby="privacy-title">
+        <div class="proof-copy"><p class="eyebrow">What this does not do</p><h2 id="privacy-title">It rehearses a restore. It does not restore production.</h2><p>Use a copied backup and a Docker host you control. Read the privacy policy for site and command data handling.</p><a class="button secondary" href="/privacy/">Read privacy details</a></div>
+        <dl class="evidence-slip"><div><dt>Sample</dt><dd>3 orders</dd></div><div><dt>Network</dt><dd>internal</dd></div><div><dt>Output</dt><dd>signed JSON report</dd></div><div><dt>Command</dt><dd><code>restore-drill demo</code></dd></div></dl>
+      </section>
+    </main>
+    <p id="route-announcement" class="sr-only" aria-live="polite"></p>
+    <footer><p><span>Restore Drill</span> · Recovery proof for self-hosted Postgres teams. · build 4f84762+polish1</p><nav aria-label="Footer"><a href="/demo/?demo=1">Demo</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><span>Built by Param Factory</span></nav></footer>
+  </body>
+</html>

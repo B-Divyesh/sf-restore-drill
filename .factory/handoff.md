@@ -2,7 +2,7 @@
 
 ## Delivered
 
-Commit `1f5a0f7a9788147a14fc4429952b96e4ab9aee86` repairs every copy, route,
+Commit `ebe1c9fdfe5ab23ae6b168607616af28c354874e` repairs every copy, route,
 demo, metadata, mobile target, legal-chrome, and claims-registry issue recorded
 in review 1.
 
@@ -49,8 +49,13 @@ npm run build
 /opt/fleet/lib/deploy-static.sh restore-drill dist/site
 ```
 
-The deploy command is run for this work order after the final documentation
-amendment. Use `restore-drill demo` on a Docker host for the real sample drill.
+Deployment completed through `/opt/fleet/lib/deploy-static.sh restore-drill
+dist/site` (Azure deployment `b74ee18e-1c5a-44fc-8c39-0258dc95644a`). Cold
+checks on 2026-08-28 returned 200 for `/`, `/demo/?demo=1`, `/privacy/`, and
+`/terms/`; `/does-not-exist` returned the product 404 with HTTP 404. Live
+Playwright found one h1/main, expected titles, no page errors, no third-party
+requests, and zero serious/critical axe findings. Use `restore-drill demo` on a
+Docker host for the real sample drill.
 
 ## Known environment limitation
 

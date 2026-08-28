@@ -1,6 +1,6 @@
 # Restore Drill — polish 1 finding map
 
-Candidate repaired: `1f5a0f7a9788147a14fc4429952b96e4ab9aee86`.
+Candidate repaired and deployed: `ebe1c9fdfe5ab23ae6b168607616af28c354874e`.
 
 | Finding | Change made | Evidence |
 | --- | --- | --- |
@@ -69,3 +69,9 @@ Candidate repaired: `1f5a0f7a9788147a14fc4429952b96e4ab9aee86`.
 - All four claim commands in `.factory/claims.json`: passed.
 - Screenshot evidence: `.factory/evidence/home-390.png`,
   `.factory/evidence/demo-1440.png`, and `.factory/evidence/404-390.png`.
+- Cold production check: `https://restore-drill.sociobot.in/` and
+  `https://restore-drill.sociobot.in/demo/?demo=1` both returned 200 with the
+  expected title, one h1, main landmark, no console errors, and no external
+  requests. `https://restore-drill.sociobot.in/does-not-exist` returned the
+  project-owned 404 with status 404. Live mobile screenshots are under
+  `.factory/evidence/live/`.
