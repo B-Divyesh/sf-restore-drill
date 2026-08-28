@@ -1,0 +1,32 @@
+name: Weekly restore drill
+
+on:
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  restore-drill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build Restore Drill
+        run: cargo build --release --locked --package restore-drill
+      - name: Write the local credential file
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.RESTORE_DRILL_POSTGRES_PASSWORD }}
+        run: |
+          umask 077
+          printf 'POSTGRES_PASSWORD=%s\n' "$POSTGRES_PASSWORD" > ops/.restore-drill.env
+      - name: Run the drill
+        run: target/release/restore-drill run --config ops/restore-drill.toml --json > restore-drill-result.json
+      - name: Preserve the signed report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restore-drill-report-${{ github.run_id }}
+          path: |
+            .restore-drill/reports/*.json
+            restore-drill-result.json
+          if-no-files-found: error

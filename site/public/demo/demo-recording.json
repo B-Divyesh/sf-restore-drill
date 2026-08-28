@@ -1,0 +1,8 @@
+{
+  "command": "restore-drill demo",
+  "source": "pending-real-docker-capture",
+  "captured_at": "2026-08-28T00:00:00Z",
+  "frames": [
+    { "text": "restore-drill: preparing the recorded sample", "delay_ms": 250 }
+  ]
+}

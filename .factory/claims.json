@@ -1,30 +1,72 @@
 [
   {
-    "id": "demo-isolated",
-    "claim": "The sample demo uses shipped data in a fresh temporary directory, creates an internal Docker network, verifies three orders, signs a report, and cleans up the network.",
-    "where": "landing facts, /demo, examples README",
-    "test": "cargo test --workspace demo_uses_shipped_sample_in_a_fresh_temporary_directory",
-    "sandbox": "fresh temporary directory; Docker-compatible harness; assert the bundled sample report passes"
+    "id": "real-docker-restore",
+    "claim": "The demo command restores three shipped rows on Postgres in an internal Docker network, signs the result, reports a corrupt backup, and removes its resources.",
+    "where": "landing, web walkthrough, README",
+    "test": "cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored",
+    "sandbox": "clean GitHub-hosted Ubuntu runner with a real Docker daemon; healthy and corrupt shipped SQL; verify both signatures and zero managed resources"
+  },
+  {
+    "id": "demo-sandbox",
+    "claim": "The one-click web walkthrough uses only sample state in the demo namespace, and Reset clears and restarts it.",
+    "where": "landing action, demo banner, demo documentation",
+    "test": "npm run test:site -- --grep @claim:demo-sandbox",
+    "sandbox": "fresh browser context at /demo/?demo=1; inspect storage namespaces, playback state, reset, and exit destination"
   },
   {
     "id": "production-boundary",
-    "claim": "Restore Drill does not accept a production HTTP target for a drill.",
-    "where": "landing safety section, terms",
-    "test": "cargo test --workspace rejects_production_http_host",
-    "sandbox": "fresh configuration with an HTTPS public target; assert validation fails before Docker is called"
+    "claim": "Restore Drill rejects public, loopback, HTTPS, and undeclared HTTP targets before Docker runs.",
+    "where": "README, terms",
+    "test": "cargo test --workspace rejects_public_loopback_and_undeclared_http_hosts_before_docker",
+    "sandbox": "fresh configurations covering public HTTP, loopback, HTTPS, undeclared internal, and one declared internal host"
+  },
+  {
+    "id": "automation-contract",
+    "claim": "With --json, stdout contains one report object; success exits 0, a failed drill exits 1, and invalid input exits 2.",
+    "where": "README automation section",
+    "test": "cargo test --workspace json_output_and_exit_codes_are_stable_for_automation",
+    "sandbox": "fresh demo directories with successful, assertion-failure, and missing-config runs"
+  },
+  {
+    "id": "local-io-boundary",
+    "claim": "A drill leaves its backup unchanged and writes reports and signing keys only to configured output paths.",
+    "where": "privacy page, README",
+    "test": "cargo test --workspace drill_keeps_inputs_unchanged_and_outputs_in_configured_paths",
+    "sandbox": "fresh directory with sentinel input and unrelated canary; compare source bytes and enumerate configured outputs"
+  },
+  {
+    "id": "image-pull",
+    "claim": "The demo pulls its Postgres image when missing before it creates Docker resources.",
+    "where": "web walkthrough",
+    "test": "cargo test --workspace demo_pulls_a_missing_postgres_image_before_creating_resources",
+    "sandbox": "fresh Docker-compatible process harness; fail first image inspection and assert pull precedes network creation"
+  },
+  {
+    "id": "distribution-build",
+    "claim": "npm run build writes an executable Linux CLI and the complete static site under dist.",
+    "where": "README development section",
+    "test": "npm run build && node --test --test-name-pattern='distribution build' tests/claims.test.mjs",
+    "sandbox": "clean clone; assert executable bit and home, demo, privacy, terms, and 404 documents"
+  },
+  {
+    "id": "weekly-scheduling",
+    "claim": "The shipped cron and GitHub Actions examples run weekly, preserve reports, propagate failure, and keep credentials out of source.",
+    "where": "README scheduling section",
+    "test": "node --test --test-name-pattern='scheduling examples' tests/claims.test.mjs",
+    "sandbox": "repository examples; assert weekly triggers, strict shell exit, encrypted secret reference, and always-run report upload"
   },
   {
     "id": "mit-license",
     "claim": "Restore Drill is MIT-licensed.",
-    "where": "landing facts, terms",
-    "test": "node --test tests/claims.test.mjs",
-    "sandbox": "repository distribution files; assert both LICENSE and crate metadata identify MIT"
+    "where": "landing facts, terms, README",
+    "test": "node --test --test-name-pattern='MIT license' tests/claims.test.mjs",
+    "sandbox": "repository distribution files; assert LICENSE text and crate metadata identify MIT"
   },
   {
     "id": "site-no-tracking",
-    "claim": "The documentation site uses no analytics or tracking cookies.",
+    "claim": "The documentation site uses no analytics or tracking cookies; its first-party cache contains only public site files.",
     "where": "privacy page",
     "test": "npm run test:site -- --grep @claim:site-no-tracking",
-    "sandbox": "fresh browser context; assert no third-party requests, cookies, local storage, session storage, IndexedDB, or service-worker registration before the page is closed"
+    "sandbox": "production-equivalent build in a fresh browser; assert same-origin requests, no cookies/local/session/IndexedDB, one first-party service worker, and public-only Cache Storage"
   }
 ]

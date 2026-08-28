@@ -1,0 +1,2 @@
+# Run each Monday at 03:17. Keep credentials in the config's mode-0600 env file.
+17 3 * * 1 RESTORE_DRILL_CONFIG=/etc/restore-drill/weekly.toml RESTORE_DRILL_LOG_DIR=/var/lib/restore-drill/job-results /usr/local/bin/restore-drill-weekly

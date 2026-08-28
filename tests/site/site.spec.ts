@@ -1,77 +1,142 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+const routes = [
+  ['/', 'Restore Drill — prove your Postgres backup restores', 'https://restore-drill.sociobot.in/'],
+  ['/demo/?demo=1', 'Demo — Restore Drill', 'https://restore-drill.sociobot.in/demo/'],
+  ['/privacy/', 'Privacy — Restore Drill', 'https://restore-drill.sociobot.in/privacy/'],
+  ['/terms/', 'Terms — Restore Drill', 'https://restore-drill.sociobot.in/terms/'],
+  ['/404.html', 'Page not found — Restore Drill', 'https://restore-drill.sociobot.in/404']
+] as const;
+
 test('home gives small self-hosted teams one clear sample entry', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle('Restore Drill — prove your Postgres backup restores');
   await expect(page.locator('h1')).toHaveText('Prove your Postgres backup restores.');
-  await expect(page.getByRole('link', { name: 'Try it with sample data' })).toHaveAttribute('href', /\/demo\/\?demo=1/);
+  await expect(page.getByRole('link', { name: 'Try it with sample data' })).toHaveAttribute('href', '/demo/?demo=1');
   await expect(page.getByText('For small self-hosted teams that need recovery proof before an outage.')).toBeVisible();
+  await expect(page.getByText('Replays a recorded sample restore and opens its signed report.')).toBeVisible();
   await expect(page.locator('.plain-facts li')).toHaveCount(3);
 });
 
-test('@claim:site-no-tracking documentation pages make no tracking requests or browser-data writes', async ({ browser }) => {
+test('@claim:site-no-tracking uses only a public first-party cache', async ({ browser }) => {
   const context = await browser.newContext();
   const page = await context.newPage();
-  const thirdParty: string[] = [];
-  page.on('request', request => {
-    if (!request.url().startsWith('http://127.0.0.1:4173')) thirdParty.push(request.url());
-  });
+  const requests: string[] = [];
+  page.on('request', request => requests.push(request.url()));
   await page.goto('/privacy/');
-  expect(thirdParty).toEqual([]);
-  expect(await context.cookies()).toEqual([]);
-  expect(await page.evaluate(() => ({
+  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+  await expect.poll(() => page.evaluate(async () => (await caches.keys()).length)).toBe(1);
+  const state = await page.evaluate(async () => ({
     local: localStorage.length,
     session: sessionStorage.length,
-    indexedDb: indexedDB.databases ? 'available' : 'unavailable'
-  }))).toEqual({ local: 0, session: 0, indexedDb: 'available' });
+    indexedDb: indexedDB.databases ? (await indexedDB.databases()).length : 0,
+    registrations: (await navigator.serviceWorker.getRegistrations()).map(item => new URL(item.scope).origin),
+    caches: await Promise.all((await caches.keys()).map(async name => ({
+      name,
+      urls: (await (await caches.open(name)).keys()).map(request => request.url)
+    })))
+  }));
+  expect(requests.every(url => new URL(url).origin === 'http://127.0.0.1:4173')).toBe(true);
+  expect(await context.cookies()).toEqual([]);
+  expect(state.local).toBe(0);
+  expect(state.session).toBe(0);
+  expect(state.indexedDb).toBe(0);
+  expect(state.registrations).toEqual(['http://127.0.0.1:4173']);
+  expect(state.caches).toHaveLength(1);
+  expect(state.caches[0].name).toBe('restore-drill-shell-v3');
+  expect(state.caches[0].urls.length).toBeGreaterThanOrEqual(9);
+  expect(state.caches[0].urls.every(url => new URL(url).origin === 'http://127.0.0.1:4173')).toBe(true);
   await context.close();
 });
 
-test('demo has the isolation banner, reset, and real start link', async ({ page }) => {
+test('@claim:demo-sandbox isolates playback state and Reset restarts it', async ({ page }) => {
   await page.goto('/demo/?demo=1');
   await expect(page).toHaveTitle('Demo — Restore Drill');
-  await expect(page.locator('h1')).toHaveText('Run a sample Postgres restore.');
+  await expect(page.locator('h1')).toHaveText('Replay a sample Postgres restore.');
   await expect(page.getByLabel('Demo status')).toContainText('sample data');
-  await expect(page.getByRole('button', { name: 'Reset demo' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Start for real' })).toHaveAttribute('href', '/');
+  await expect(page.getByRole('link', { name: 'Start for real' })).toHaveAttribute('href', '/#install-from-source');
+  await expect.poll(() => page.locator('[data-recording] li').count()).toBeGreaterThan(1);
+  expect(await page.evaluate(() => Object.keys(sessionStorage))).toEqual(['demo:restore-drill:playback']);
+  expect(await page.evaluate(() => Object.keys(localStorage))).toEqual([]);
   await page.getByRole('button', { name: 'Reset demo' }).click();
-  await expect(page).toHaveURL(/\/demo\/\?demo=1/);
+  await expect(page.locator('[data-recording] li')).toHaveCount(1);
+  expect(await page.evaluate(() => sessionStorage.getItem('demo:restore-drill:playback'))).toBe('0');
+  await page.getByRole('link', { name: 'Start for real' }).click();
+  await expect(page).toHaveURL(/\/#install-from-source$/);
+  await expect(page.locator('#install-title')).toBeFocused();
+  expect(await page.evaluate(() => Object.keys(sessionStorage))).toEqual([]);
 });
 
-test('legal and 404 documents use product chrome and route metadata', async ({ page }) => {
-  for (const [path, title] of [['/privacy/', 'Privacy — Restore Drill'], ['/terms/', 'Terms — Restore Drill'], ['/404.html', 'Page not found — Restore Drill']]) {
+test('demo exposes a real-run recording and inspectable signed report', async ({ page }) => {
+  await page.goto('/demo/?demo=1');
+  const report = await (await page.request.get('/demo/sample-report.json')).json();
+  const recording = await (await page.request.get('/demo/demo-recording.json')).json();
+  expect(report.status).toBe('passed');
+  expect(report.assertions[0]).toMatchObject({ observed: '3', passed: true });
+  expect(report.signature.length).toBeGreaterThan(40);
+  expect(recording.source).not.toContain('pending');
+  expect(recording.frames.map((frame: { text: string }) => frame.text).join('\n')).toContain('three sample orders restore: 3');
+  await expect(page.getByRole('link', { name: 'Download signed report' })).toHaveAttribute('href', '/demo/sample-report.json');
+});
+
+test('every route has complete route-specific metadata and product chrome', async ({ page }) => {
+  for (const [path, title, canonical] of routes) {
     await page.goto(path);
     await expect(page).toHaveTitle(title);
     await expect(page.locator('header')).toHaveCount(1);
     await expect(page.locator('footer')).toHaveCount(1);
     await expect(page.locator('main')).toHaveCount(1);
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveCount(1);
-    await expect(page.locator('meta[property="og:image"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);
+    await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', canonical);
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /restore-drill-og\.jpg$/);
+    await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', title);
+    await expect(page.locator('meta[name="twitter:description"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', /restore-drill-og\.jpg$/);
   }
 });
 
-test('hash navigation moves focus and announces the section', async ({ page }) => {
+test('hash and document navigation move focus and announce context', async ({ page }) => {
   await page.goto('/#how');
   await expect(page.locator('#method-title')).toBeFocused();
   await expect(page.locator('#route-announcement')).toContainText('Run four checks before an outage');
-});
-
-test('mobile layout has no overflow and controls meet touch size', async ({ page }) => {
   await page.goto('/');
-  expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)).toBe(false);
-  const controls = await page.locator('a, button').evaluateAll(items => items.map(item => {
-    const rect = item.getBoundingClientRect(); return { text: item.textContent?.trim(), width: rect.width, height: rect.height };
-  }));
-  expect(controls.filter(item => item.width > 0 && item.height > 0 && (item.width < 44 || item.height < 44))).toEqual([]);
-  await page.keyboard.press('Tab');
-  await expect(page.locator('.skip-link')).toBeFocused();
+  await page.getByRole('link', { name: 'Try it with sample data' }).click();
+  await expect(page.locator('h1')).toBeFocused();
+  await expect(page.locator('#route-announcement')).toContainText('Demo — Restore Drill');
+  await page.goBack();
+  await expect(page.locator('h1')).toBeFocused();
+  await expect(page.locator('#route-announcement')).toContainText('prove your Postgres backup restores');
 });
 
-test('has no serious accessibility findings', async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name === 'mobile', 'Desktop axe covers the identical document');
+test('all routes fit the viewport and visible controls meet touch size', async ({ page }) => {
+  for (const [path] of routes) {
+    await page.goto(path);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), path).toBe(false);
+    const controls = await page.locator('a, button').evaluateAll(items => items.map(item => {
+      const rect = item.getBoundingClientRect();
+      return { text: item.textContent?.trim(), width: rect.width, height: rect.height };
+    }));
+    expect(controls.filter(item => item.width > 0 && item.height > 0 && (item.width < 44 || item.height < 44)), path).toEqual([]);
+  }
+});
+
+test('all routes have no serious accessibility findings', async ({ page }) => {
+  for (const [path] of routes) {
+    await page.goto(path);
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+    expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact || '')), path).toEqual([]);
+  }
+});
+
+test('demo reloads offline after its first visit', async ({ page, context }) => {
   await page.goto('/demo/?demo=1');
-  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-  expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact || ''))).toEqual([]);
+  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+  await page.reload();
+  await context.setOffline(true);
+  await page.reload();
+  await expect(page.locator('h1')).toHaveText('Replay a sample Postgres restore.');
+  await expect(page.locator('[data-report-summary]')).toContainText('passed');
 });

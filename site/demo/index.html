@@ -3,34 +3,45 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Run Restore Drill's harmless sample Postgres restore in a temporary directory on your Docker host.">
+    <meta name="description" content="Replay a verified Restore Drill run and inspect its signed report.">
     <meta name="theme-color" content="#f3ebd7">
     <link rel="canonical" href="https://restore-drill.sociobot.in/demo/">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta property="og:type" content="website"><meta property="og:title" content="Demo — Restore Drill"><meta property="og:description" content="Run the shipped sample restore."><meta property="og:image" content="https://restore-drill.sociobot.in/restore-drill-og.jpg">
-    <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Demo — Restore Drill"><meta name="twitter:description" content="Run the shipped sample restore."><meta name="twitter:image" content="https://restore-drill.sociobot.in/restore-drill-og.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Demo — Restore Drill">
+    <meta property="og:description" content="Replay a verified Postgres restore and inspect its signed report.">
+    <meta property="og:image" content="https://restore-drill.sociobot.in/restore-drill-og.jpg">
+    <meta property="og:url" content="https://restore-drill.sociobot.in/demo/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Demo — Restore Drill">
+    <meta name="twitter:description" content="Replay a verified Postgres restore and inspect its signed report.">
+    <meta name="twitter:image" content="https://restore-drill.sociobot.in/restore-drill-og.jpg">
     <title>Demo — Restore Drill</title>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to main content</a>
     <header class="site-header"><a class="brand" href="/" aria-label="Restore Drill home"><span class="brand-mark" aria-hidden="true">RD</span><span>Restore Drill</span></a><nav aria-label="Primary navigation"><a href="/demo/?demo=1" aria-current="page">Demo</a><a href="/#how">How it works</a><a href="/privacy/">Privacy</a></nav></header>
-    <aside class="demo-banner" aria-label="Demo status"><strong>Demo — sample data, nothing is saved to your data.</strong><span><button type="button" data-reset-demo>Reset demo</button><a href="/">Start for real</a></span></aside>
+    <aside class="demo-banner" aria-label="Demo status"><strong>Demo — sample data, nothing is saved to your data.</strong><span><button type="button" data-reset-demo>Reset demo</button><a href="/#install-from-source" data-exit-demo>Start for real</a></span></aside>
     <main id="main" class="demo-page">
-      <p class="eyebrow">One-command sample</p>
-      <h1>Run a sample Postgres restore.</h1>
-      <p class="lede">This command copies three sample orders into a new temporary directory on your Docker host.</p>
-      <section class="demo-command" aria-labelledby="demo-command-title"><h2 id="demo-command-title">Run the isolated sample drill.</h2><pre><code>restore-drill demo
-
-restore-drill: sample data is isolated in /tmp/restore-drill-demo-…
-restore-drill: hashing complete; preparing isolated images
-✓ passed in 3.24s — report /tmp/restore-drill-demo-…/reports/sample-orders-….json
-  ✓ three sample orders restore: 3
-restore-drill: demo report and sample files are in /tmp/restore-drill-demo-…</code></pre><p>Docker pulls the sample image if it is missing. The command prints the report directory so you can inspect or remove it.</p></section>
-      <section class="demo-steps" aria-labelledby="sample-title"><h2 id="sample-title">What the sample contains</h2><ul><li>A SQL backup with three fictional orders</li><li>A Docker configuration for an internal test network</li><li>A check that expects all three orders after restore</li></ul><a class="button primary" href="https://github.com/B-Divyesh/sf-restore-drill#install">Install and run the demo (opens GitHub)</a></section>
+      <p class="eyebrow">Verified web walkthrough</p>
+      <h1>Replay a sample Postgres restore.</h1>
+      <p class="lede">Watch a recorded Docker run restore three sample orders. Then inspect the signed report it produced.</p>
+      <section class="demo-command" aria-labelledby="demo-command-title">
+        <div class="demo-heading"><div><p class="evidence-kicker">Recorded on a GitHub-hosted Linux runner</p><h2 id="demo-command-title">Restore transcript</h2></div><button type="button" class="playback-control" data-playback-toggle aria-pressed="false">Pause replay</button></div>
+        <div class="terminal-recording" tabindex="0" role="region" aria-label="Recorded terminal output. Lines wrap on small screens."><ol data-recording aria-live="polite"><li><span aria-hidden="true">$</span> restore-drill demo</li></ol></div>
+        <p class="recording-note">Recorded output from the real demo command. Times and temporary paths vary by computer.</p>
+      </section>
+      <section class="report-panel" aria-labelledby="report-title">
+        <p class="eyebrow">Generated evidence</p>
+        <h2 id="report-title">Inspect the signed sample report.</h2>
+        <dl class="report-summary" data-report-summary><div><dt>Status</dt><dd>Loading recorded report…</dd></div></dl>
+        <p><a class="button secondary" href="/demo/sample-report.json" download>Download signed report</a> <a href="/demo/sample-report.json">Open report in this tab</a></p>
+      </section>
+      <section class="demo-steps" aria-labelledby="sample-title"><h2 id="sample-title">What the sample contains</h2><ul><li>A SQL backup with three fictional orders</li><li>A Docker configuration for an internal test network</li><li>A check that expects all three orders after restore</li></ul><p>The command pulls Postgres first when the image is missing. It removes its test container, volume, and network after the run.</p><a class="button primary" href="https://github.com/B-Divyesh/sf-restore-drill#install-from-source">Install and run the demo (opens GitHub)</a></section>
     </main>
     <p id="route-announcement" class="sr-only" aria-live="polite"></p>
-    <footer><p><span>Restore Drill</span> · Recovery proof for self-hosted Postgres teams. · build 4f84762+polish1</p><nav aria-label="Footer"><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><span>Built by Param Factory</span></nav></footer>
+    <footer><p><span>Restore Drill</span> · Recovery proof for self-hosted Postgres teams. · build 1672b17+polish2</p><nav aria-label="Footer"><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><span>Built by Param Factory</span></nav></footer>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

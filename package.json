@@ -12,8 +12,9 @@
     "clean": "node scripts/clean.mjs",
     "check:types": "tsc -p site/tsconfig.json --noEmit",
     "check:lint": "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
-    "test:policies": "node --test tests/site/response-policy.test.mjs",
+    "test:policies": "node --test tests/site/*.test.mjs",
     "test:site": "playwright test",
+    "test:docker": "cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored",
     "test:claims": "node --test tests/claims.test.mjs",
     "test": "cargo test --workspace && npm run test:claims && npm run test:policies && npm run test:site"
   },

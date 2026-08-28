@@ -17,7 +17,8 @@ test('Azure Static Web Apps response policy supplies the release security header
   const csp = headers['Content-Security-Policy'];
 
   assert.match(csp, /default-src 'self'/);
-  assert.match(csp, /connect-src 'self' https:\/\/api\.sociobot\.in/);
+  assert.match(csp, /connect-src 'self'/);
+  assert.doesNotMatch(csp, /https:\/\//);
   assert.match(csp, /frame-ancestors 'none'/);
   assert.equal(headers['Permissions-Policy'], 'camera=(), microphone=(), geolocation=()');
   assert.equal(headers['Referrer-Policy'], 'strict-origin-when-cross-origin');

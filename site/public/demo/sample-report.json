@@ -1,0 +1,9 @@
+{
+  "schema": "restore-drill/v1",
+  "drill": "sample-orders",
+  "recovery_time_ms": 0,
+  "status": "pending",
+  "artifact": { "sha256": "pending-real-docker-capture" },
+  "assertions": [{ "name": "three sample orders restore", "observed": "pending", "passed": false }],
+  "signature": "pending-real-docker-capture"
+}

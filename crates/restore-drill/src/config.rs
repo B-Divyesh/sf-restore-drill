@@ -425,10 +425,26 @@ url="{http_url}"
 
     // @claim:production-boundary
     #[test]
-    fn rejects_production_http_host() {
-        let (_dir, path) = fixture("https://api.example.com/health");
-        let error = Config::load(&path).unwrap_err();
-        assert!(error.contains("must use http"));
+    fn rejects_public_loopback_and_undeclared_http_hosts_before_docker() {
+        let cases = [
+            ("https://restore-drill-app:3000/health", "must use http"),
+            ("http://203.0.113.8/health", "is not a declared service"),
+            ("http://127.0.0.1:3000/health", "is not a declared service"),
+            ("http://localhost:3000/health", "is not a declared service"),
+            (
+                "http://other-internal-app:3000/health",
+                "is not a declared service",
+            ),
+        ];
+
+        for (url, expected) in cases {
+            let (_dir, path) = fixture(url);
+            let error = Config::load(&path).unwrap_err();
+            assert!(
+                error.contains(expected),
+                "{url} returned an unexpected validation error: {error}"
+            );
+        }
     }
 
     #[test]

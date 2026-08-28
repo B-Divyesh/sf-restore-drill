@@ -1,0 +1,26 @@
+name: Real Docker claim
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  real-docker-restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Run real Postgres restore claim
+        run: cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored
+      - name: Capture the real demo for the web walkthrough
+        run: |
+          cargo build --release --locked --package restore-drill
+          node scripts/capture-real-demo.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-demo-evidence
+          path: |
+            site/public/demo/demo-recording.json
+            site/public/demo/sample-report.json
