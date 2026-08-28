@@ -87,7 +87,7 @@ test('every route has complete route-specific metadata and product chrome', asyn
     await expect(page).toHaveTitle(title);
     await expect(page.locator('header')).toHaveCount(1);
     await expect(page.locator('footer')).toHaveCount(1);
-    await expect(page.locator('footer')).toContainText('build polish3');
+    await expect(page.locator('footer')).toContainText('build polish4');
     await expect(page.locator('main')).toHaveCount(1);
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);
@@ -124,7 +124,7 @@ test('every same-origin link and in-page target resolves', async ({ page, reques
 test('hash and document navigation move focus and announce context', async ({ page }) => {
   await page.goto('/#how');
   await expect(page.locator('#method-title')).toBeFocused();
-  await expect(page.locator('#route-announcement')).toContainText('Run four checks before an outage');
+  await expect(page.locator('#route-announcement')).toContainText('Rehearse a restore in four steps');
   await page.goto('/');
   await page.getByRole('link', { name: 'Try it with sample data' }).click();
   await expect(page.locator('h1')).toBeFocused();
@@ -143,6 +143,17 @@ test('all routes fit the viewport and visible controls meet touch size', async (
       return { text: item.textContent?.trim(), width: rect.width, height: rect.height };
     }));
     expect(controls.filter(item => item.width > 0 && item.height > 0 && (item.width < 44 || item.height < 44)), path).toEqual([]);
+  }
+});
+
+test('mobile headers keep the product name and primary navigation visible', async ({ page }) => {
+  for (const [path] of routes) {
+    await page.goto(path);
+    await expect(page.locator('.brand').getByText('Restore Drill', { exact: true })).toBeVisible();
+    const navigation = page.getByRole('navigation', { name: 'Primary navigation' });
+    await expect(navigation.getByRole('link', { name: 'Demo', exact: true })).toBeVisible();
+    await expect(navigation.getByRole('link', { name: 'How it works', exact: true })).toBeVisible();
+    await expect(navigation.getByRole('link', { name: 'Privacy', exact: true })).toBeVisible();
   }
 });
 

@@ -1,4 +1,4 @@
-# Restore Drill copy audit — polish 3
+# Restore Drill copy audit — polish 4
 
 Counts use visible alphanumeric words. Hyphenated terms and commands count as
 one word. No unit exceeds 22 words. No public copy uses a banned marketing word.
@@ -24,7 +24,7 @@ one word. No unit exceeds 22 words. No public copy uses a banned marketing word.
 | 3 | Sample backup in. |
 | 3 | Signed report out. |
 | 4 | How the command works |
-| 6 | Run four checks before an outage. |
+| 6 | Rehearse a restore in four steps. |
 | 5 | Create an isolated Docker network. |
 | 10 | The command uses a new internal network for the rehearsal. |
 | 5 | Restore a shipped sample backup. |

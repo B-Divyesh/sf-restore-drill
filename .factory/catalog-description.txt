@@ -1,1 +1,1 @@
-Prove a Postgres backup restores in an isolated Docker network.
+Prove your Postgres backup restores inside an isolated Docker network.

@@ -4,7 +4,7 @@
     "claim": "The demo command restores three shipped rows on Postgres in an internal Docker network, signs the result, reports a corrupt backup, and removes its resources.",
     "where": "landing, web walkthrough, README",
     "test": "cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored",
-    "sandbox": "clean GitHub-hosted Ubuntu runner with a real Docker daemon; healthy and corrupt shipped SQL; verify both signatures and zero managed resources"
+    "sandbox": "clean release worker with a real Docker daemon; healthy and corrupt shipped SQL; verify both signatures and zero managed resources"
   },
   {
     "id": "demo-sandbox",
