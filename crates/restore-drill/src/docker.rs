@@ -216,6 +216,11 @@ impl<'a> DrillRun<'a> {
 
     fn wait_for_postgres(&self) -> Result<(), String> {
         let deadline = Instant::now() + Duration::from_secs(self.config.drill.timeout_seconds);
+        // The official Postgres image briefly accepts connections on a
+        // temporary initialization server, then restarts into the final
+        // server. Require consecutive probes so a restore cannot race that
+        // intentional shutdown.
+        let mut consecutive_ready = 0;
         loop {
             self.guard_cancelled()?;
             if self
@@ -231,12 +236,17 @@ impl<'a> DrillRun<'a> {
                 ])
                 .is_ok()
             {
-                return Ok(());
+                consecutive_ready += 1;
+                if consecutive_ready >= 3 {
+                    return Ok(());
+                }
+            } else {
+                consecutive_ready = 0;
             }
             if Instant::now() >= deadline {
                 return Err("Postgres did not become ready before the drill timeout".into());
             }
-            thread::sleep(Duration::from_secs(1));
+            thread::sleep(Duration::from_millis(500));
         }
     }
 
