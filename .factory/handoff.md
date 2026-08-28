@@ -54,8 +54,9 @@ dist/site` (Azure deployment `b74ee18e-1c5a-44fc-8c39-0258dc95644a`). Cold
 checks on 2026-08-28 returned 200 for `/`, `/demo/?demo=1`, `/privacy/`, and
 `/terms/`; `/does-not-exist` returned the product 404 with HTTP 404. Live
 Playwright found one h1/main, expected titles, no page errors, no third-party
-requests, and zero serious/critical axe findings. Use `restore-drill demo` on a
-Docker host for the real sample drill.
+requests, and zero serious/critical axe findings. After service-worker control,
+an offline reload of `/demo/?demo=1` retained its title, h1, and demo banner.
+Use `restore-drill demo` on a Docker host for the real sample drill.
 
 ## Known environment limitation
 
