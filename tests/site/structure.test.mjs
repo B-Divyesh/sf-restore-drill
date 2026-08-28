@@ -47,6 +47,6 @@ test('site setup links target the real README installation heading', async () =>
 
 test('catalog description is verb-first and no longer than 120 characters', async () => {
   const description = (await readFile(resolve(root, '.factory/catalog-description.txt'), 'utf8')).trim();
-  assert.ok(description.startsWith('Test '));
+  assert.ok(description.startsWith('Prove '));
   assert.ok(description.length <= 120, `catalog description is ${description.length} characters`);
 });

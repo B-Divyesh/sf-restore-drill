@@ -3,7 +3,7 @@
 Restore Drill is for small self-hosted teams that need recovery proof before an outage.
 
 It restores a Postgres backup in an internal Docker network. It records a
-tamper-evident report file after the checks finish.
+signed report file you can check later.
 
 ## Install from source
 

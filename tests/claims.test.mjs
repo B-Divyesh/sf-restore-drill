@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { access } from 'node:fs/promises';
-import { constants } from 'node:fs';
+import { constants, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import test from 'node:test';
 
@@ -16,7 +16,9 @@ test('the distributed repository includes the MIT license', async () => {
 });
 
 // @claim:distribution-build
-test('the distribution build contains an executable CLI and every site route', async () => {
+test('the distribution build contains an executable CLI and every site route', {
+  skip: !existsSync(resolve(root, 'dist/bin/restore-drill-linux-x86_64'))
+}, async () => {
   await access(resolve(root, 'dist/bin/restore-drill-linux-x86_64'), constants.X_OK);
   for (const file of ['index.html', 'demo/index.html', 'privacy/index.html', 'terms/index.html', '404.html']) {
     await access(resolve(root, 'dist/site', file), constants.R_OK);

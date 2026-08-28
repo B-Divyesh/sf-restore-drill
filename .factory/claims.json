@@ -68,5 +68,12 @@
     "where": "privacy page",
     "test": "npm run test:site -- --grep @claim:site-no-tracking",
     "sandbox": "production-equivalent build in a fresh browser; assert same-origin requests, no cookies/local/session/IndexedDB, one first-party service worker, and public-only Cache Storage"
+  },
+  {
+    "id": "offline-web-walkthrough",
+    "claim": "A first-party service worker caches public site files for offline reading after the first visit.",
+    "where": "privacy page, demo documentation",
+    "test": "npm run test:site -- --grep @claim:offline-web-walkthrough",
+    "sandbox": "fresh browser context at /demo/?demo=1; wait for the first-party service worker, set the context offline, reload, and assert the walkthrough and signed report summary remain available"
   }
 ]

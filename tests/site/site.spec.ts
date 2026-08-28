@@ -16,6 +16,7 @@ test('home gives small self-hosted teams one clear sample entry', async ({ page 
   await expect(page.getByRole('link', { name: 'Try it with sample data' })).toHaveAttribute('href', '/demo/?demo=1');
   await expect(page.getByText('For small self-hosted teams that need recovery proof before an outage.')).toBeVisible();
   await expect(page.getByText('Replays a recorded sample restore and opens its signed report.')).toBeVisible();
+  await expect(page.getByText('signed report you can check later')).toBeVisible();
   await expect(page.locator('.plain-facts li')).toHaveCount(3);
 });
 
@@ -55,14 +56,14 @@ test('@claim:demo-sandbox isolates playback state and Reset restarts it', async 
   await expect(page).toHaveTitle('Demo — Restore Drill');
   await expect(page.locator('h1')).toHaveText('Replay a sample Postgres restore.');
   await expect(page.getByLabel('Demo status')).toContainText('sample data');
-  await expect(page.getByRole('link', { name: 'Start for real' })).toHaveAttribute('href', '/#install-from-source');
+  await expect(page.getByRole('link', { name: 'View installation steps' })).toHaveAttribute('href', '/#install-from-source');
   await expect.poll(() => page.locator('[data-recording] li').count()).toBeGreaterThan(1);
   expect(await page.evaluate(() => Object.keys(sessionStorage))).toEqual(['demo:restore-drill:playback']);
   expect(await page.evaluate(() => Object.keys(localStorage))).toEqual([]);
   await page.getByRole('button', { name: 'Reset demo' }).click();
   await expect(page.locator('[data-recording] li')).toHaveCount(1);
   expect(await page.evaluate(() => sessionStorage.getItem('demo:restore-drill:playback'))).toBe('0');
-  await page.getByRole('link', { name: 'Start for real' }).click();
+  await page.getByRole('link', { name: 'View installation steps' }).click();
   await expect(page).toHaveURL(/\/#install-from-source$/);
   await expect(page.locator('#install-title')).toBeFocused();
   expect(await page.evaluate(() => Object.keys(sessionStorage))).toEqual([]);
@@ -152,7 +153,7 @@ test('all routes have no serious accessibility findings', async ({ page }) => {
   }
 });
 
-test('demo reloads offline after its first visit', async ({ page, context }) => {
+test('@claim:offline-web-walkthrough demo reloads offline after its first visit', async ({ page, context }) => {
   await page.goto('/demo/?demo=1');
   await page.evaluate(async () => { await navigator.serviceWorker.ready; });
   await page.reload();

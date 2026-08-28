@@ -7,14 +7,15 @@
 
 The web route immediately replays a recorded run of the real binary. It links
 the signed JSON report created by that run. The persistent banner identifies
-sample mode and provides **Reset demo** and **Start for real**.
+sample mode and provides **Reset demo** and **View installation steps**.
 
 ## Browser isolation
 
 Playback progress uses only the `demo:restore-drill:playback` session-storage
 key. The page never reads or writes application data. **Reset demo** clears all
-`demo:restore-drill:*` session keys and restarts the recording. **Start for
-real** clears the same namespace and opens the source-install section.
+`demo:restore-drill:*` session keys and restarts the recording. **View
+installation steps** clears the same namespace and opens the source-install
+section.
 
 The recording and report are public, read-only files under `site/public/demo/`.
 They are available offline after the first visit through the first-party site

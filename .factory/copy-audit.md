@@ -1,4 +1,4 @@
-# Restore Drill copy audit — polish 2
+# Restore Drill copy audit — polish 3
 
 Counts use visible alphanumeric words. Hyphenated terms and commands count as
 one word. No unit exceeds 22 words. No public copy uses a banned marketing word.
@@ -46,7 +46,7 @@ one word. No unit exceeds 22 words. No public copy uses a banned marketing word.
 | 3 | Read privacy details |
 | 2 | 3 orders |
 | 1 | internal |
-| 2 | tamper-evident report |
+| 6 | signed report you can check later |
 | 2 | restore-drill demo |
 | 6 | Recovery proof for self-hosted Postgres teams. |
 | 4 | Built by Param Factory |
@@ -57,7 +57,7 @@ one word. No unit exceeds 22 words. No public copy uses a banned marketing word.
 | ---: | --- |
 | 7 | Demo — sample data, nothing is saved to your data. |
 | 2 | Reset demo |
-| 3 | Start for real |
+| 3 | View installation steps |
 | 3 | Verified web walkthrough |
 | 6 | Replay a sample Postgres restore. |
 | 15 | Watch a recorded Docker run restore three sample orders. Then inspect the signed report it produced. |
@@ -73,9 +73,9 @@ one word. No unit exceeds 22 words. No public copy uses a banned marketing word.
 ## README check
 
 README prose was read sentence by sentence. The longest sentence is 20 words.
-“Continuous integration” was replaced with “automation,” and “signed JSON
-report” was introduced as a “tamper-evident report file.” Install steps now
-start with `git clone` and match the public `#install-from-source` link.
+“Continuous integration” was replaced with “automation.” The report is called
+a “signed report file you can check later.” Install steps start with `git clone`
+and match the public `#install-from-source` link.
 
 ## Terminology
 
