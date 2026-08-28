@@ -43,9 +43,10 @@ zero vulnerabilities. Every non-Docker command listed in
 - `site-no-tracking`: 2 Playwright projects passed.
 - `offline-web-walkthrough`: 2 Playwright projects passed.
 
-The remaining claim, `real-docker-restore`, ran from a separate fresh checkout
-of the same commit on GitHub's Docker-capable Ubuntu runner:
-<https://github.com/B-Divyesh/sf-restore-drill/actions/runs/33185239060>.
+The remaining claim, `real-docker-restore`, ran again from a separate fresh
+checkout of final commit `89d14a270eb19331881c628c9b358beafe3b4345` on
+GitHub's Docker-capable Ubuntu runner:
+<https://github.com/B-Divyesh/sf-restore-drill/actions/runs/33186099697>.
 The exact registered command passed:
 
 ```sh

@@ -6,8 +6,9 @@ rechecked against that code and the deployed site.
 
 ## Evidence key
 
-- **D** — exact real-Docker claim on a clean hosted checkout:
-  <https://github.com/B-Divyesh/sf-restore-drill/actions/runs/33185239060>.
+- **D** — exact real-Docker claim on a clean hosted checkout of final commit
+  `89d14a270eb19331881c628c9b358beafe3b4345`:
+  <https://github.com/B-Divyesh/sf-restore-drill/actions/runs/33186099697>.
 - **C** — every non-Docker command in `.factory/claims.json`, run from clean
   checkout `/tmp/restore-drill-polish4-clean-6ZFRWO/repo` at `40b270e`.
 - **B** — clean-checkout `npm test`: 4 Rust unit tests, 7 CLI tests, 3 Node
