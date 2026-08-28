@@ -36,10 +36,19 @@ for (const [path, title] of expected) {
     main: Boolean(document.querySelector('main')),
     ogUrl: document.querySelector('meta[property="og:url"]')?.getAttribute('content'),
     twitterTitle: document.querySelector('meta[name="twitter:title"]')?.getAttribute('content'),
-    overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
+    overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    brandNameVisible: (document.querySelector('.brand span:last-child')?.getBoundingClientRect().width || 0) > 0,
+    primaryLinks: [...document.querySelectorAll('.site-header nav a')].map(link => {
+      const rect = link.getBoundingClientRect();
+      return { text: link.textContent?.trim(), width: rect.width, height: rect.height };
+    })
   }));
   assert.deepEqual({ lang: facts.lang, h1: facts.h1, main: facts.main, overflow: facts.overflow }, { lang: 'en', h1: 1, main: true, overflow: false });
+  assert.equal(facts.brandNameVisible, true, `${path} hides the product name at 390 px`);
+  assert.deepEqual(facts.primaryLinks.map(link => link.text), ['Demo', 'How it works', 'Privacy'], `${path} mobile navigation is incomplete`);
+  assert.ok(facts.primaryLinks.every(link => link.width >= 44 && link.height >= 44), `${path} mobile navigation target is below 44 px`);
   assert.ok(facts.ogUrl && facts.twitterTitle, `${path} metadata is incomplete`);
+  if (path === '/') assert.equal(await page.locator('#method-title').textContent(), 'Rehearse a restore in four steps.');
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
   const serious = axe.violations.filter(item => ['serious', 'critical'].includes(item.impact || ''));
   assert.deepEqual(serious, [], `${path} has serious Axe findings`);
@@ -81,7 +90,7 @@ assert.equal(await page.locator('h1').textContent(), 'Replay a sample Postgres r
 assert.ok((await page.locator('[data-report-summary]').textContent()).includes('passed'));
 await context.setOffline(false);
 
-const missing = new URL('/not-a-real-route-polish-2', base);
+const missing = new URL('/not-a-real-route-polish-4', base);
 const missingResponse = await context.request.get(missing.href);
 assert.equal(missingResponse.status(), 404);
 await page.goto(missing.href);
