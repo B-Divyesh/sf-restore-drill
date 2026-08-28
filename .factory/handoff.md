@@ -7,7 +7,7 @@ All findings in `.factory/review-1.md`, `.factory/polish-1.md`, and
 `.factory/polish-2.md`. No known gaps remain.
 
 The release is live at <https://restore-drill.sociobot.in/>. Static deployment
-ID: `4db96bba-3bf6-46be-9c5c-cbd0e41b4f01`.
+ID: `0b00eaac-8e8b-4bfe-8cfa-e3be42c87c0e`.
 
 ## Delivered
 
