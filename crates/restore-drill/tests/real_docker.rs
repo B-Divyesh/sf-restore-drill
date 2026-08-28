@@ -73,11 +73,6 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
         .env("TMPDIR", demo_parent.path())
         .output()
         .unwrap();
-    assert!(
-        healthy.status.success(),
-        "{}",
-        String::from_utf8_lossy(&healthy.stderr)
-    );
     let demo_root = fs::read_dir(demo_parent.path())
         .unwrap()
         .map(|entry| entry.unwrap())
@@ -92,6 +87,12 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
         .path();
     let healthy_path = only_report_in(&demo_root);
     let healthy_report: Value = serde_json::from_slice(&fs::read(&healthy_path).unwrap()).unwrap();
+    assert!(
+        healthy.status.success(),
+        "{}\nreport error: {}",
+        String::from_utf8_lossy(&healthy.stderr),
+        healthy_report["error"]
+    );
     assert_eq!(healthy_report["status"], "passed");
     assert_eq!(healthy_report["assertions"][0]["observed"], "3");
     assert!(healthy_report["signature"].as_str().unwrap().len() > 40);
