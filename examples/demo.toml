@@ -1,0 +1,25 @@
+version = 1
+
+[drill]
+name = "sample-orders"
+network = "restore-drill-sample-orders"
+timeout_seconds = 90
+report_dir = "reports"
+signing_key = "signing.key"
+
+[postgres]
+image = "postgres:16-alpine"
+container = "restore-drill-sample-db"
+database = "sample_app"
+user = "restore_drill"
+credential_file = "demo.env"
+
+[source]
+kind = "dump"
+path = "sample-backup.sql"
+format = "plain"
+
+[[assertions.sql]]
+name = "three sample orders restore"
+query = "SELECT count(*) FROM drill_orders"
+expect = "3"

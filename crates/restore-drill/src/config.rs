@@ -423,6 +423,7 @@ url="{http_url}"
         Config::load(&path).unwrap();
     }
 
+    // @claim:production-boundary
     #[test]
     fn rejects_production_http_host() {
         let (_dir, path) = fixture("https://api.example.com/health");

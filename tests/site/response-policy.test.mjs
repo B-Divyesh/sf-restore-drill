@@ -45,3 +45,8 @@ test('the Azure policy and _headers fallback cannot silently diverge', async () 
   assert.match(legacy, /\/assets\/\*[\s\S]*?Cache-Control: public, max-age=31536000, immutable/);
   assert.match(legacy, /\/restore-chamber\.webp[\s\S]*?Cache-Control: public, max-age=31536000, immutable/);
 });
+
+test('the host rewrites a missing route to the product 404 document', async () => {
+  const config = await policy();
+  assert.equal(config.responseOverrides['404'].rewrite, '/404.html');
+});

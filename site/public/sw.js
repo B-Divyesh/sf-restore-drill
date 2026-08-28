@@ -1,5 +1,5 @@
-const CACHE = 'restore-drill-shell-v1';
-const SHELL = ['/', '/privacy/', '/terms/', '/restore-chamber.webp'];
+const CACHE = 'restore-drill-shell-v2';
+const SHELL = ['/', '/demo/', '/privacy/', '/terms/', '/404.html', '/restore-chamber.webp', '/favicon.svg', '/apple-touch-icon.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
 });

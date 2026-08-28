@@ -78,3 +78,6 @@ states switch instantly using opacity or direct replacement.
 - Registration crosses, dotted textures, probe paths, and status marks are
   hand-made CSS/SVG primitives in the application. They carry no third-party
   provenance.
+- `site/public/restore-drill-og.jpg` and `site/public/apple-touch-icon.png` are
+  local crops of the project-original `restore-chamber.webp` artwork. They add
+  social and device previews without introducing a third-party asset.

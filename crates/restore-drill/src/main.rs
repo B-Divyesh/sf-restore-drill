@@ -31,6 +31,12 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Run the shipped sample backup in a new temporary directory
+    Demo {
+        /// Emit only the final report JSON to stdout
+        #[arg(long)]
+        json: bool,
+    },
     /// Write a safe starter config and local credential file
     Init {
         #[arg(short, long, default_value = "restore-drill.toml")]
@@ -81,6 +87,7 @@ fn main() -> ExitCode {
 fn real_main() -> Result<u8, (u8, String)> {
     let cli = Cli::parse();
     match cli.command {
+        Commands::Demo { json } => demo(&cli.docker, json),
         Commands::Init { output, force } => init(&output, force).map(|_| 0).map_err(|e| (2, e)),
         Commands::Check { config, json } => check(&cli.docker, &config, json)
             .map(|_| 0)
@@ -98,6 +105,60 @@ fn real_main() -> Result<u8, (u8, String)> {
             .map(|_| 0)
             .map_err(|e| (1, e)),
     }
+}
+
+/// A demo is deliberately a normal drill with a bundled, harmless SQL backup.
+/// It writes every input, key, and report below a fresh directory in the system
+/// temporary directory; it never reads a caller's configuration or backup.
+fn demo(docker_path: &Path, json: bool) -> Result<u8, (u8, String)> {
+    let nonce = format!(
+        "restore-drill-demo-{}-{}",
+        std::process::id(),
+        Utc::now().timestamp_millis()
+    );
+    let root = std::env::temp_dir().join(nonce);
+    fs::create_dir_all(&root).map_err(|e| {
+        (
+            2,
+            format!("could not create demo directory {}: {e}", root.display()),
+        )
+    })?;
+    let config = root.join("restore-drill.toml");
+    fs::write(
+        root.join("sample-backup.sql"),
+        include_str!("../examples/sample-backup.sql"),
+    )
+    .map_err(|e| (2, format!("could not write demo backup: {e}")))?;
+    let credentials = root.join("demo.env");
+    let mut options = fs::OpenOptions::new();
+    options.write(true).create_new(true);
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::OpenOptionsExt;
+        options.mode(0o600);
+    }
+    use std::io::Write;
+    options
+        .open(&credentials)
+        .and_then(|mut file| file.write_all(b"POSTGRES_PASSWORD=restore-drill-demo-only\n"))
+        .map_err(|e| (2, format!("could not write demo credentials: {e}")))?;
+    fs::write(&config, include_str!("../examples/demo.toml"))
+        .map_err(|e| (2, format!("could not write demo configuration: {e}")))?;
+
+    if !json {
+        eprintln!(
+            "restore-drill: sample data is isolated in {}",
+            root.display()
+        );
+    }
+    let code = run(docker_path, &config, json, false)?;
+    if !json {
+        eprintln!(
+            "restore-drill: demo report and sample files are in {}",
+            root.display()
+        );
+    }
+    Ok(code)
 }
 
 fn init(output: &Path, force: bool) -> Result<(), String> {

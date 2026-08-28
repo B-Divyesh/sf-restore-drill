@@ -1,61 +1,61 @@
-# Restore Drill review 1 handoff
+# Restore Drill polish 1 handoff
 
-## Outcome
+## Delivered
 
-Adversarial first-read review 1 is complete. Verdict: **FAIL**.
+Commit `1f5a0f7a9788147a14fc4429952b96e4ab9aee86` repairs every copy, route,
+demo, metadata, mobile target, legal-chrome, and claims-registry issue recorded
+in review 1.
 
-The full report is `.factory/review-1.md`. Product code was not modified.
+- `restore-drill demo` now runs the bundled three-order SQL sample through the
+  normal drill pipeline from a fresh system temporary directory.
+- `/demo/?demo=1` is a direct sample walkthrough with a persistent isolation
+  banner, reset control, and start-real link.
+- The landing page now states the audience, job, and one evaluation action in
+  the first screen. The unregistered paid offer and untestable marketing claims
+  were removed.
+- Real `/demo/`, `/privacy/`, `/terms/`, and product-owned 404 documents ship
+  with titles, canonical/social metadata, favicon, touch icon, shared chrome,
+  focus behavior, and static-host 404 override.
+- Claim evidence is in `.factory/claims.json`; the complete finding-by-finding
+  mapping is in `.factory/polish-1.md`.
 
-## What was done
+## Verification
 
-- Audited the live first screen in fresh Chromium contexts at 390 × 844 and
-  1440 × 900.
-- Audited every landing-page and README sentence, heading, and control against
-  the supplied plain-words rules, with word counts and concrete rewrites.
-- Exercised the healthy/broken preview, storage isolation, same-origin network
-  behavior, service-worker offline reload, `/demo`, and the CLI demo entry from
-  a temporary directory.
-- Cross-checked all public claims. `.factory/claims.json` and `@claim` tests are
-  absent, so all retained claim groups are recorded as unlisted findings.
-- Read the earlier handoff and both verification reports; confirmed the response
-  policy repair and repeated the still-open billing and real-Docker gaps.
-- Crawled all landing links and checked titles, descriptions, canonicals,
-  landmarks, route chrome, 404 behavior, social metadata, keyboard focus, touch
-  targets, outbound requests, and visual identity.
-- Ran the complete quality gates from a separate clean clone.
+From a separate clean clone at `/tmp/restore-drill-clean`:
 
-## Verification evidence
+```sh
+npm ci
+npm test                         # 13 passed, 1 intentional duplicate axe skip
+npm run check:types
+npm run check:lint
+npm run build                    # dist/bin + dist/site
+cargo package --manifest-path crates/restore-drill/Cargo.toml --allow-dirty
+```
 
-Clean clone at `4f84762554e3b693a064578a29d7178a0b93c211`:
+All four commands in `.factory/claims.json` passed from that clean clone. The
+package verification passed with the bundled demo data included in the crate.
+The static build is 1.85 KB gzip JavaScript and 3.57 KB gzip CSS. Screenshots:
+
+- `.factory/evidence/home-390.png`
+- `.factory/evidence/demo-1440.png`
+- `.factory/evidence/404-390.png`
+
+## Run and deploy
 
 ```sh
 npm ci
 npm test
-npm run check:types
-npm run check:lint
 npm run build
+/opt/fleet/lib/deploy-static.sh restore-drill dist/site
 ```
 
-All commands passed. The test result was 7 Rust tests, 3 policy tests, and 9
-Playwright passes with 1 intentional duplicate-mobile axe skip. The build
-produced `dist/bin/restore-drill-linux-x86_64` and `dist/site/`.
+The deploy command is run for this work order after the final documentation
+amendment. Use `restore-drill demo` on a Docker host for the real sample drill.
 
-Additional live checks:
+## Known environment limitation
 
-- `/opt/fleet/lib/verify-url.sh https://restore-drill.sociobot.in <temp-dir>`:
-  pass.
-- Playwright axe at mobile and desktop: zero WCAG 2 A/AA and 2.1 AA violations.
-- Online load followed by offline reload: pass, same-origin requests only.
-- On-page preview storage before/after: no local/session storage or cookies.
-- `restore-drill demo` in a temporary directory: exit 2, unrecognized command.
-- `/demo`: HTTP 404, generic Azure page.
-- Team Kit checkout: HTTP 404 JSON response.
-- Live production assets match the clean build hashes.
-
-## Work left
-
-Resolve every finding in `.factory/review-1.md`. The release blockers are the
-unclear first screen, missing real demo/sandbox, absent claims registry and
-claim-tagged tests, dead checkout, generic/broken demo and 404 routing, and lack
-of a real Docker/Postgres end-to-end run. The report also records copy,
-metadata, route consistency/focus, and mobile target-size findings.
+This worker image has no `docker` executable or daemon/socket. The demo and
+existing integration test exercise the normal command flow with a
+Docker-compatible harness, including report signing and cleanup. A real Docker
+daemon run remains required operational evidence; it cannot be truthfully
+executed in this container. No product behavior is stubbed for that limitation.

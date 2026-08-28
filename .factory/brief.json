@@ -1,6 +1,7 @@
 {
   "slug": "restore-drill",
   "title": "Restore Drill",
+  "summary": "Prove a Postgres backup restores in an isolated Docker network.",
   "territory": "devtools-data",
   "user": "A small team self-hosting Postgres and application data that needs recurring proof that a backup can restore into a usable isolated environment, not merely that a job completed.",
   "smallest_useful_product": "A Docker-first CLI that restores a chosen Postgres dump/volume into an isolated network, runs configurable SQL/HTTP smoke assertions, records duration and artifact hashes, then tears it down.",

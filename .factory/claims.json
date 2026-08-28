@@ -1,0 +1,30 @@
+[
+  {
+    "id": "demo-isolated",
+    "claim": "The sample demo uses shipped data in a fresh temporary directory, creates an internal Docker network, verifies three orders, signs a report, and cleans up the network.",
+    "where": "landing facts, /demo, examples README",
+    "test": "cargo test --workspace demo_uses_shipped_sample_in_a_fresh_temporary_directory",
+    "sandbox": "fresh temporary directory; Docker-compatible harness; assert the bundled sample report passes"
+  },
+  {
+    "id": "production-boundary",
+    "claim": "Restore Drill does not accept a production HTTP target for a drill.",
+    "where": "landing safety section, terms",
+    "test": "cargo test --workspace rejects_production_http_host",
+    "sandbox": "fresh configuration with an HTTPS public target; assert validation fails before Docker is called"
+  },
+  {
+    "id": "mit-license",
+    "claim": "Restore Drill is MIT-licensed.",
+    "where": "landing facts, terms",
+    "test": "node --test tests/claims.test.mjs",
+    "sandbox": "repository distribution files; assert both LICENSE and crate metadata identify MIT"
+  },
+  {
+    "id": "site-no-tracking",
+    "claim": "The documentation site uses no analytics or tracking cookies.",
+    "where": "privacy page",
+    "test": "npm run test:site -- --grep @claim:site-no-tracking",
+    "sandbox": "fresh browser context; assert no third-party requests, cookies, local storage, session storage, IndexedDB, or service-worker registration before the page is closed"
+  }
+]

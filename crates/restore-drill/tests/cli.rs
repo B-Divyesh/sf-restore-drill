@@ -33,6 +33,55 @@ fn init_is_non_destructive() {
         .stderr(predicate::str::contains("already exists"));
 }
 
+// @claim:demo-isolated
+#[cfg(unix)]
+#[test]
+fn demo_uses_shipped_sample_in_a_fresh_temporary_directory() {
+    use std::os::unix::fs::PermissionsExt;
+    let dir = tempfile::tempdir().unwrap();
+    let fake = dir.path().join("docker");
+    let log = dir.path().join("docker.log");
+    fs::write(
+        &fake,
+        r#"#!/bin/sh
+case " $* " in
+  *" image inspect "*) printf 'sha256:sample-image\n' ;;
+  *" exec restore-drill-sample-db psql "*" -c "*) printf '3\n' ;;
+esac
+printf '%s\n' "$*" >> "$FAKE_DOCKER_LOG"
+exit 0
+"#,
+    )
+    .unwrap();
+    let mut permissions = fs::metadata(&fake).unwrap().permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(&fake, permissions).unwrap();
+    let output = Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
+        .arg("--docker")
+        .arg(&fake)
+        .args(["demo", "--json"])
+        .env("FAKE_DOCKER_LOG", &log)
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let report: Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(report["drill"], "sample-orders");
+    assert_eq!(report["status"], "passed");
+    assert_eq!(report["artifact"]["file_name"], "sample-backup.sql");
+    assert!(
+        report["signature"]
+            .as_str()
+            .is_some_and(|value| !value.is_empty())
+    );
+    let events = fs::read_to_string(log).unwrap();
+    assert!(events.contains("network create --internal"));
+    assert!(events.contains("network rm restore-drill-sample-orders"));
+}
+
 #[cfg(unix)]
 #[test]
 fn run_completes_with_a_docker_compatible_engine_and_verifies_report() {
