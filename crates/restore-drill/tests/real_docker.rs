@@ -95,9 +95,15 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
     );
     let demo_root = fs::read_dir(demo_parent.path())
         .unwrap()
-        .next()
-        .unwrap()
-        .unwrap()
+        .map(|entry| entry.unwrap())
+        .find(|entry| {
+            entry.file_type().is_ok_and(|kind| kind.is_dir())
+                && entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("restore-drill-demo-")
+        })
+        .expect("demo command must create its isolated temporary directory")
         .path();
     let healthy_path = only_report_in(&demo_root);
     let healthy_report: Value = serde_json::from_slice(&fs::read(&healthy_path).unwrap()).unwrap();
