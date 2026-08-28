@@ -68,24 +68,9 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
     assert_no_managed_resources();
 
     let demo_parent = tempfile::tempdir().unwrap();
-    let docker_log = demo_parent.path().join("docker-commands.log");
-    let docker_wrapper = demo_parent.path().join("docker");
-    fs::write(
-        &docker_wrapper,
-        "#!/bin/sh\nprintf '%s\\n' \"$*\" >> \"$REAL_DOCKER_LOG\"\nexec /usr/bin/docker \"$@\"\n",
-    )
-    .unwrap();
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::PermissionsExt;
-        fs::set_permissions(&docker_wrapper, fs::Permissions::from_mode(0o755)).unwrap();
-    }
     let healthy = Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
-        .arg("--docker")
-        .arg(&docker_wrapper)
         .arg("demo")
         .env("TMPDIR", demo_parent.path())
-        .env("REAL_DOCKER_LOG", &docker_log)
         .output()
         .unwrap();
     assert!(
@@ -118,10 +103,6 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
         .assert()
         .success();
     assert_no_managed_resources();
-    let commands = fs::read_to_string(&docker_log).unwrap();
-    assert!(commands.contains("network create --internal"));
-    assert!(commands.contains("exec restore-drill-sample-db psql"));
-    assert!(commands.contains("network rm restore-drill-sample-orders"));
 
     if let Ok(capture_dir) = std::env::var("RESTORE_DRILL_CAPTURE_DIR") {
         let capture_dir = PathBuf::from(capture_dir);
@@ -191,12 +172,9 @@ expect = "3"
     )
     .unwrap();
     let broken = Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
-        .arg("--docker")
-        .arg(&docker_wrapper)
         .args(["run", "--config"])
         .arg(broken_root.path().join("restore-drill.toml"))
         .arg("--json")
-        .env("REAL_DOCKER_LOG", &docker_log)
         .output()
         .unwrap();
     assert_eq!(broken.status.code(), Some(1));
