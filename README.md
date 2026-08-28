@@ -7,7 +7,7 @@ tamper-evident report file after the checks finish.
 
 ## Install from source
 
-Docker Engine and Rust 1.85 or newer must be installed. Copy and run these
+Docker Engine and a Rust toolchain must be installed. Copy and run these
 commands from any working directory:
 
 ```sh

@@ -1,9 +1,9 @@
 {
   "schema": "restore-drill/v1",
   "drill": "sample-orders",
-  "started_at": "2026-08-28T12:46:04.299620969Z",
-  "finished_at": "2026-08-28T12:46:19.386784635Z",
-  "recovery_time_ms": 15087,
+  "started_at": "2026-08-28T12:58:54.864430326Z",
+  "finished_at": "2026-08-28T12:59:03.026983294Z",
+  "recovery_time_ms": 8162,
   "status": "passed",
   "artifact": {
     "file_name": "sample-backup.sql",
@@ -21,10 +21,10 @@
       "passed": true,
       "expected": "3",
       "observed": "3",
-      "duration_ms": 47
+      "duration_ms": 57
     }
   ],
   "error": null,
-  "public_key": "zY+5Ajb17NPHV1AZljj+G9XbqiQmesp6drPHa0e0OvQ=",
-  "signature": "tGHSBSNLijydQAGPSDbE5Tf5BQt0HFn5UIoOYorJsQJtpoMdpCpQXJy61KRBI/Te0awoPXJ7ypPWWyDSrZihAg=="
+  "public_key": "hppUPkuMpCpsTN30ej7msOKWm9LwTeyuW2EhxMAP3m4=",
+  "signature": "ydFiJxTZeMUJyyX8tkU4abyufKJ14SQ9yf3MItdJHXEeAiCo4yn24IzJMS1Zdz9+8NDu48pUY84uf61m4ABvCQ=="
 }

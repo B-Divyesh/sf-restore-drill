@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-08-28T12:46:19.386784635Z",
+  "captured_at": "2026-08-28T12:59:03.026983294Z",
   "command": "restore-drill demo",
   "frames": [
     {
@@ -20,7 +20,7 @@
     },
     {
       "delay_ms": 420,
-      "text": "✓ passed in <measured time> — report /tmp/restore-drill-demo-…/reports/sample-orders-2026-08-28T124619.386Z.json"
+      "text": "✓ passed in <measured time> — report /tmp/restore-drill-demo-…/reports/sample-orders-2026-08-28T125903.026Z.json"
     },
     {
       "delay_ms": 420,
@@ -31,5 +31,5 @@
       "text": "restore-drill: demo report and sample files are in /tmp/restore-drill-demo-…"
     }
   ],
-  "source": "d049f50e670d07a1c0aadffb5679d82b2c7300ca"
+  "source": "0e220c7871a7bcf154e252a3a41f6f4822069c3e"
 }
