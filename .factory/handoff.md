@@ -1,5 +1,23 @@
 # Restore Drill v0.1.0 handoff
 
+> ## Independent QA 2 — **PASS** (2026-08-28 UTC)
+>
+> Candidate `150ebbbdc89317f39907bccd5ecd755abb2f3b45` was independently
+> verified from a clean clone against https://restore-drill.sociobot.in/.
+> Clean install, types, lint, all tests, production build, crate package and
+> clean-consumer installation passed. Fresh live hashes match the candidate;
+> the previously failed CSP, frame, Permissions-Policy, and immutable-cache
+> deployment checks now pass. Live desktop and 390 px browser, keyboard,
+> reduced-motion, offline PWA, privacy/outbound-request, axe, and Lighthouse
+> checks passed with no critical, high, medium, or low defect found. See
+> `.factory/verification-2.md` for exact commands, hashes, headers, and scores.
+>
+> The verifier container has no Docker executable or daemon, so one real
+> representative restore and one corrupt-artifact restore on a Docker host
+> remain operational follow-up before a release tag. The deterministic
+> Docker-compatible integration harness passed; this limitation does not alter
+> the independent QA verdict.
+
 > ## Repair verification — **PASS** (2026-08-28 UTC)
 >
 > Repair commit `8dd45ba0fadb0108d34d0a1366eb1c74f503d7eb` resolves the one
