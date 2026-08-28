@@ -1,0 +1,229 @@
+
+> restore-drill-workspace@0.1.0 test
+> cargo test --workspace && npm run test:claims && npm run test:policies && npm run test:site
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+     Running unittests src/main.rs (target/debug/deps/restore_drill-a55b7daefa0b44a6)
+
+running 4 tests
+test config::tests::rejects_archive_traversal ... ok
+test config::tests::accepts_internal_declared_http_host ... ok
+test config::tests::rejects_public_loopback_and_undeclared_http_hosts_before_docker ... ok
+test report::tests::signed_report_detects_tampering ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/cli.rs (target/debug/deps/cli-c951879822ecf62e)
+
+running 7 tests
+test demo_uses_shipped_sample_in_a_fresh_temporary_directory ... ok
+test demo_pulls_a_missing_postgres_image_before_creating_resources ... ok
+test help_describes_the_real_workflow ... ok
+test init_is_non_destructive ... ok
+test drill_keeps_inputs_unchanged_and_outputs_in_configured_paths ... ok
+test json_output_and_exit_codes_are_stable_for_automation ... ok
+test run_completes_with_a_docker_compatible_engine_and_verifies_report ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.12s
+
+     Running tests/real_docker.rs (target/debug/deps/real_docker-68b7d2c230db953c)
+
+running 1 test
+test real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup ... ignored, requires a real Docker daemon and pulls postgres:16-alpine
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+> restore-drill-workspace@0.1.0 test:claims
+> node --test tests/claims.test.mjs
+
+TAP version 13
+# Subtest: the distributed repository includes the MIT license
+ok 1 - the distributed repository includes the MIT license
+  ---
+  duration_ms: 6.543603
+  type: 'test'
+  ...
+# Subtest: the distribution build contains an executable CLI and every site route
+ok 2 - the distribution build contains an executable CLI and every site route
+  ---
+  duration_ms: 1.851201
+  type: 'test'
+  ...
+# Subtest: the scheduling examples preserve reports, failures, and credential boundaries
+ok 3 - the scheduling examples preserve reports, failures, and credential boundaries
+  ---
+  duration_ms: 2.500001
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 96.278445
+
+> restore-drill-workspace@0.1.0 test:policies
+> node --test tests/site/*.test.mjs
+
+TAP version 13
+# Subtest: Azure Static Web Apps response policy supplies the release security headers
+ok 1 - Azure Static Web Apps response policy supplies the release security headers
+  ---
+  duration_ms: 5.341202
+  type: 'test'
+  ...
+# Subtest: Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+ok 2 - Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+  ---
+  duration_ms: 1.4518
+  type: 'test'
+  ...
+# Subtest: the Azure policy and _headers fallback cannot silently diverge
+ok 3 - the Azure policy and _headers fallback cannot silently diverge
+  ---
+  duration_ms: 1.555501
+  type: 'test'
+  ...
+# Subtest: the host rewrites a missing route to the product 404 document
+ok 4 - the host rewrites a missing route to the product 404 document
+  ---
+  duration_ms: 2.956401
+  type: 'test'
+  ...
+# Subtest: every registered claim has exactly one tagged test
+ok 5 - every registered claim has exactly one tagged test
+  ---
+  duration_ms: 9.354704
+  type: 'test'
+  ...
+# Subtest: site setup links target the real README installation heading
+ok 6 - site setup links target the real README installation heading
+  ---
+  duration_ms: 3.409001
+  type: 'test'
+  ...
+# Subtest: catalog description is verb-first and no longer than 120 characters
+ok 7 - catalog description is verb-first and no longer than 120 characters
+  ---
+  duration_ms: 1.195101
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 94.233044
+
+> restore-drill-workspace@0.1.0 test:site
+> playwright test
+
+[1A[2K[2m[WebServer] [22m(node:16524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+TAP version 13
+# Subtest: Azure Static Web Apps response policy supplies the release security headers
+ok 1 - Azure Static Web Apps response policy supplies the release security headers
+  ---
+  duration_ms: 3.836902
+  type: 'test'
+  ...
+# Subtest: Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+ok 2 - Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+  ---
+  duration_ms: 2.043901
+  type: 'test'
+  ...
+# Subtest: the Azure policy and _headers fallback cannot silently diverge
+ok 3 - the Azure policy and _headers fallback cannot silently diverge
+  ---
+  duration_ms: 2.688102
+  type: 'test'
+  ...
+# Subtest: the host rewrites a missing route to the product 404 document
+ok 4 - the host rewrites a missing route to the product 404 document
+  ---
+  duration_ms: 1.4424
+  type: 'test'
+  ...
+
+Running 20 tests using 2 workers
+
+# Subtest: every registered claim has exactly one tagged test
+ok 5 - every registered claim has exactly one tagged test
+  ---
+  duration_ms: 13.636907
+  type: 'test'
+  ...
+# Subtest: site setup links target the real README installation heading
+ok 6 - site setup links target the real README installation heading
+  ---
+  duration_ms: 4.446902
+  type: 'test'
+  ...
+# Subtest: catalog description is verb-first and no longer than 120 characters
+ok 7 - catalog description is verb-first and no longer than 120 characters
+  ---
+  duration_ms: 1.809101
+  type: 'test'
+  ...
+[1A[2K(node:16543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:16544) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:16544) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:16543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/20] [chromium] › tests/site/site.spec.ts:23:1 › @claim:site-no-tracking uses only a public first-party cache
+[1A[2K[2/20] [chromium] › tests/site/site.spec.ts:12:1 › home gives small self-hosted teams one clear sample entry
+[1A[2K[3/20] [chromium] › tests/site/site.spec.ts:54:1 › @claim:demo-sandbox isolates playback state and Reset restarts it
+[1A[2K[4/20] [chromium] › tests/site/site.spec.ts:72:1 › demo exposes a real-run recording and inspectable signed report
+[1A[2K[5/20] [chromium] › tests/site/site.spec.ts:84:1 › every route has complete route-specific metadata and product chrome
+[1A[2K[6/20] [chromium] › tests/site/site.spec.ts:103:1 › every same-origin link and in-page target resolves
+[1A[2K[7/20] [chromium] › tests/site/site.spec.ts:124:1 › hash and document navigation move focus and announce context
+[1A[2K[8/20] [chromium] › tests/site/site.spec.ts:137:1 › all routes fit the viewport and visible controls meet touch size
+[1A[2K[9/20] [chromium] › tests/site/site.spec.ts:149:1 › all routes have no serious accessibility findings
+[1A[2K[10/20] [chromium] › tests/site/site.spec.ts:157:1 › @claim:offline-web-walkthrough demo reloads offline after its first visit
+[1A[2K(node:16781) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:16781) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[11/20] [mobile] › tests/site/site.spec.ts:12:1 › home gives small self-hosted teams one clear sample entry
+[1A[2K[12/20] [mobile] › tests/site/site.spec.ts:23:1 › @claim:site-no-tracking uses only a public first-party cache
+[1A[2K[13/20] [mobile] › tests/site/site.spec.ts:54:1 › @claim:demo-sandbox isolates playback state and Reset restarts it
+[1A[2K[14/20] [mobile] › tests/site/site.spec.ts:84:1 › every route has complete route-specific metadata and product chrome
+[1A[2K(node:16921) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:16921) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[15/20] [mobile] › tests/site/site.spec.ts:103:1 › every same-origin link and in-page target resolves
+[1A[2K[16/20] [mobile] › tests/site/site.spec.ts:72:1 › demo exposes a real-run recording and inspectable signed report
+[1A[2K[17/20] [mobile] › tests/site/site.spec.ts:124:1 › hash and document navigation move focus and announce context
+[1A[2K[18/20] [mobile] › tests/site/site.spec.ts:137:1 › all routes fit the viewport and visible controls meet touch size
+[1A[2K[19/20] [mobile] › tests/site/site.spec.ts:149:1 › all routes have no serious accessibility findings
+[1A[2K[20/20] [mobile] › tests/site/site.spec.ts:157:1 › @claim:offline-web-walkthrough demo reloads offline after its first visit
+[1A[2K  20 passed (25.5s)

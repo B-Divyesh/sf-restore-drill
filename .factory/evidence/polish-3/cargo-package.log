@@ -1,0 +1,9 @@
+   Packaging restore-drill v0.1.0 (/work/repo/crates/restore-drill)
+    Updating crates.io index
+    Packaged 13 files, 112.3KiB (28.8KiB compressed)
+   Verifying restore-drill v0.1.0 (/work/repo/crates/restore-drill)
+   Compiling rustix v1.1.4
+   Compiling xattr v1.6.1
+   Compiling tar v0.4.46
+   Compiling restore-drill v0.1.0 (/work/repo/target/package/restore-drill-0.1.0)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.05s

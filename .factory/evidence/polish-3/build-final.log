@@ -1,0 +1,30 @@
+
+> restore-drill-workspace@0.1.0 build
+> npm run clean && npm run build:cli && npm run build:site
+
+
+> restore-drill-workspace@0.1.0 clean
+> node scripts/clean.mjs
+
+
+> restore-drill-workspace@0.1.0 build:cli
+> cargo build --release --workspace && node scripts/copy-binary.mjs
+
+    Finished `release` profile [optimized] target(s) in 0.22s
+
+> restore-drill-workspace@0.1.0 build:site
+> vite build --config site/vite.config.ts
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+../dist/site/404.html                    2.36 kB │ gzip: 0.96 kB
+../dist/site/terms/index.html            2.81 kB │ gzip: 1.19 kB
+../dist/site/privacy/index.html          3.30 kB │ gzip: 1.38 kB
+../dist/site/demo/index.html             4.59 kB │ gzip: 1.75 kB
+../dist/site/index.html                  5.96 kB │ gzip: 2.03 kB
+../dist/site/assets/style-DW2UlhV2.css  14.24 kB │ gzip: 3.93 kB
+../dist/site/assets/main-Cwha7fFc.js     4.31 kB │ gzip: 1.92 kB
+✓ built in 160ms

@@ -1,0 +1,608 @@
+
+added 22 packages, and audited 23 packages in 1s
+
+5 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.4
+   Compiling stable_deref_trait v1.2.1
+   Compiling syn v3.0.4
+   Compiling syn v2.0.119
+   Compiling synstructure v0.13.2
+   Compiling zerovec-derive v0.11.6
+   Compiling zerofrom-derive v0.1.7
+   Compiling yoke-derive v0.8.2
+   Compiling zerofrom v0.1.8
+   Compiling displaydoc v0.2.7
+   Compiling yoke v0.8.3
+   Compiling zerovec v0.11.8
+   Compiling serde_core v1.0.229
+   Compiling version_check v0.9.5
+   Compiling generic-array v0.14.7
+   Compiling tinystr v0.8.4
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling autocfg v1.5.1
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling typenum v1.20.1
+   Compiling icu_locale_core v2.3.0
+   Compiling num-traits v0.2.19
+   Compiling potential_utf v0.1.6
+   Compiling zerotrie v0.2.5
+   Compiling serde_derive v1.0.229
+   Compiling utf8_iter v1.0.4
+   Compiling icu_properties_data v2.3.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling bitflags v2.13.1
+   Compiling icu_collections v2.3.0
+   Compiling icu_provider v2.3.1
+   Compiling rustix v1.1.4
+   Compiling semver v1.0.28
+   Compiling anstyle v1.0.14
+   Compiling rustc_version v0.4.1
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling aho-corasick v1.1.5
+   Compiling linux-raw-sys v0.12.1
+   Compiling utf8parse v0.2.2
+   Compiling smallvec v1.15.2
+   Compiling regex-syntax v0.8.11
+   Compiling cfg_aliases v0.2.2
+   Compiling nix v0.31.3
+   Compiling regex-automata v0.4.18
+   Compiling icu_normalizer v2.3.0
+   Compiling anstyle-parse v1.0.0
+   Compiling digest v0.10.7
+   Compiling icu_properties v2.3.0
+   Compiling curve25519-dalek v4.1.3
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+   Compiling colorchoice v1.0.5
+   Compiling cpufeatures v0.2.17
+   Compiling crc32fast v1.5.1
+   Compiling anstyle-query v1.1.5
+   Compiling zmij v1.0.23
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling indexmap v2.14.0
+   Compiling anstream v1.0.0
+   Compiling idna_adapter v1.2.2
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling curve25519-dalek-derive v0.1.1
+   Compiling getrandom v0.2.17
+   Compiling zeroize v1.9.0
+   Compiling signature v2.2.0
+   Compiling winnow v0.7.15
+   Compiling getrandom v0.4.3
+   Compiling toml_write v0.1.2
+   Compiling percent-encoding v2.3.2
+   Compiling serde_json v1.0.151
+   Compiling strsim v0.11.1
+   Compiling adler2 v2.0.1
+   Compiling predicates-core v1.0.10
+   Compiling clap_lex v1.1.0
+   Compiling subtle v2.6.1
+   Compiling simd-adler32 v0.3.10
+   Compiling heck v0.5.0
+   Compiling clap_derive v4.6.4
+   Compiling toml_edit v0.22.27
+   Compiling miniz_oxide v0.8.9
+   Compiling clap_builder v4.6.6
+   Compiling form_urlencoded v1.2.2
+   Compiling ed25519 v2.2.3
+   Compiling rand_core v0.6.4
+   Compiling idna v1.1.0
+   Compiling sha2 v0.10.9
+   Compiling xattr v1.6.1
+   Compiling regex v1.13.1
+   Compiling float-cmp v0.10.0
+   Compiling filetime v0.2.29
+   Compiling wait-timeout v0.2.1
+   Compiling itoa v1.0.18
+   Compiling assert_cmd v2.2.2
+   Compiling termtree v0.5.1
+   Compiling normalize-line-endings v0.3.0
+   Compiling difflib v0.4.0
+   Compiling iana-time-zone v0.1.65
+   Compiling predicates v3.1.4
+   Compiling chrono v0.4.45
+   Compiling predicates-tree v1.0.13
+   Compiling tar v0.4.46
+   Compiling ed25519-dalek v2.2.0
+   Compiling flate2 v1.1.9
+   Compiling url v2.5.8
+   Compiling clap v4.6.6
+   Compiling ctrlc v3.5.2
+   Compiling toml v0.8.23
+   Compiling bstr v1.13.1
+   Compiling fastrand v2.5.0
+   Compiling hex v0.4.3
+   Compiling once_cell v1.21.4
+   Compiling base64 v0.22.1
+   Compiling tempfile v3.27.0
+   Compiling restore-drill v0.1.0 (/tmp/restore-drill-clean-polish3-v1iBGE/crates/restore-drill)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 34.65s
+     Running unittests src/main.rs (target/debug/deps/restore_drill-a55b7daefa0b44a6)
+
+running 1 test
+test config::tests::rejects_public_loopback_and_undeclared_http_hosts_before_docker ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (target/debug/deps/cli-c951879822ecf62e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/real_docker.rs (target/debug/deps/real_docker-68b7d2c230db953c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.14s
+     Running unittests src/main.rs (target/debug/deps/restore_drill-a55b7daefa0b44a6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (target/debug/deps/cli-c951879822ecf62e)
+
+running 1 test
+test json_output_and_exit_codes_are_stable_for_automation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 2.05s
+
+     Running tests/real_docker.rs (target/debug/deps/real_docker-68b7d2c230db953c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/main.rs (target/debug/deps/restore_drill-a55b7daefa0b44a6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (target/debug/deps/cli-c951879822ecf62e)
+
+running 1 test
+test drill_keeps_inputs_unchanged_and_outputs_in_configured_paths ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 1.03s
+
+     Running tests/real_docker.rs (target/debug/deps/real_docker-68b7d2c230db953c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/main.rs (target/debug/deps/restore_drill-a55b7daefa0b44a6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (target/debug/deps/cli-c951879822ecf62e)
+
+running 1 test
+test demo_pulls_a_missing_postgres_image_before_creating_resources ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 1.03s
+
+     Running tests/real_docker.rs (target/debug/deps/real_docker-68b7d2c230db953c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+
+> restore-drill-workspace@0.1.0 build
+> npm run clean && npm run build:cli && npm run build:site
+
+
+> restore-drill-workspace@0.1.0 clean
+> node scripts/clean.mjs
+
+
+> restore-drill-workspace@0.1.0 build:cli
+> cargo build --release --workspace && node scripts/copy-binary.mjs
+
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling stable_deref_trait v1.2.1
+   Compiling cfg-if v1.0.4
+   Compiling libc v0.2.189
+   Compiling serde_core v1.0.229
+   Compiling syn v3.0.4
+   Compiling syn v2.0.119
+   Compiling synstructure v0.13.2
+   Compiling zerovec-derive v0.11.6
+   Compiling zerofrom-derive v0.1.7
+   Compiling yoke-derive v0.8.2
+   Compiling zerofrom v0.1.8
+   Compiling displaydoc v0.2.7
+   Compiling version_check v0.9.5
+   Compiling yoke v0.8.3
+   Compiling generic-array v0.14.7
+   Compiling zerovec v0.11.8
+   Compiling tinystr v0.8.4
+   Compiling litemap v0.8.3
+   Compiling writeable v0.6.4
+   Compiling typenum v1.20.1
+   Compiling serde v1.0.229
+   Compiling icu_locale_core v2.3.0
+   Compiling potential_utf v0.1.6
+   Compiling zerotrie v0.2.5
+   Compiling serde_derive v1.0.229
+   Compiling utf8_iter v1.0.4
+   Compiling icu_properties_data v2.3.0
+   Compiling icu_normalizer_data v2.3.0
+   Compiling icu_collections v2.3.0
+   Compiling icu_provider v2.3.1
+   Compiling bitflags v2.13.1
+   Compiling semver v1.0.28
+   Compiling rustc_version v0.4.1
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling cfg_aliases v0.2.2
+   Compiling smallvec v1.15.2
+   Compiling autocfg v1.5.1
+   Compiling utf8parse v0.2.2
+   Compiling rustix v1.1.4
+   Compiling num-traits v0.2.19
+   Compiling anstyle-parse v1.0.0
+   Compiling icu_normalizer v2.3.0
+   Compiling digest v0.10.7
+   Compiling nix v0.31.3
+   Compiling icu_properties v2.3.0
+   Compiling curve25519-dalek v4.1.3
+   Compiling anstyle v1.0.14
+   Compiling colorchoice v1.0.5
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling cpufeatures v0.2.17
+   Compiling linux-raw-sys v0.12.1
+   Compiling zmij v1.0.23
+   Compiling crc32fast v1.5.1
+   Compiling anstyle-query v1.1.5
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.17.1
+   Compiling anstream v1.0.0
+   Compiling idna_adapter v1.2.2
+   Compiling indexmap v2.14.0
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling getrandom v0.2.17
+   Compiling curve25519-dalek-derive v0.1.1
+   Compiling toml_write v0.1.2
+   Compiling clap_lex v1.1.0
+   Compiling zeroize v1.9.0
+   Compiling simd-adler32 v0.3.10
+   Compiling signature v2.2.0
+   Compiling strsim v0.11.1
+   Compiling heck v0.5.0
+   Compiling serde_json v1.0.151
+   Compiling adler2 v2.0.1
+   Compiling percent-encoding v2.3.2
+   Compiling subtle v2.6.1
+   Compiling winnow v0.7.15
+   Compiling form_urlencoded v1.2.2
+   Compiling toml_edit v0.22.27
+   Compiling miniz_oxide v0.8.9
+   Compiling clap_derive v4.6.4
+   Compiling clap_builder v4.6.6
+   Compiling ed25519 v2.2.3
+   Compiling xattr v1.6.1
+   Compiling rand_core v0.6.4
+   Compiling idna v1.1.0
+   Compiling sha2 v0.10.9
+   Compiling filetime v0.2.29
+   Compiling iana-time-zone v0.1.65
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling tar v0.4.46
+   Compiling chrono v0.4.45
+   Compiling ed25519-dalek v2.2.0
+   Compiling flate2 v1.1.9
+   Compiling url v2.5.8
+   Compiling ctrlc v3.5.2
+   Compiling clap v4.6.6
+   Compiling toml v0.8.23
+   Compiling wait-timeout v0.2.1
+   Compiling hex v0.4.3
+   Compiling base64 v0.22.1
+   Compiling restore-drill v0.1.0 (/tmp/restore-drill-clean-polish3-v1iBGE/crates/restore-drill)
+    Finished `release` profile [optimized] target(s) in 47.75s
+
+> restore-drill-workspace@0.1.0 build:site
+> vite build --config site/vite.config.ts
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+../dist/site/404.html                    2.37 kB │ gzip: 0.96 kB
+../dist/site/terms/index.html            2.82 kB │ gzip: 1.20 kB
+../dist/site/privacy/index.html          3.30 kB │ gzip: 1.39 kB
+../dist/site/demo/index.html             4.60 kB │ gzip: 1.76 kB
+../dist/site/index.html                  5.97 kB │ gzip: 2.04 kB
+../dist/site/assets/style-DW2UlhV2.css  14.24 kB │ gzip: 3.93 kB
+../dist/site/assets/main-Cwha7fFc.js     4.31 kB │ gzip: 1.92 kB
+✓ built in 154ms
+TAP version 13
+# Subtest: the distribution build contains an executable CLI and every site route
+ok 1 - the distribution build contains an executable CLI and every site route
+  ---
+  duration_ms: 4.526102
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 85.932844
+TAP version 13
+# Subtest: the scheduling examples preserve reports, failures, and credential boundaries
+ok 1 - the scheduling examples preserve reports, failures, and credential boundaries
+  ---
+  duration_ms: 5.276703
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 85.939245
+TAP version 13
+# Subtest: the distributed repository includes the MIT license
+ok 1 - the distributed repository includes the MIT license
+  ---
+  duration_ms: 5.796803
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 87.633745
+
+> restore-drill-workspace@0.1.0 test:site
+> playwright test --grep @claim:demo-sandbox
+
+[1A[2K[2m[WebServer] [22m(node:13503) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+TAP version 13
+# Subtest: Azure Static Web Apps response policy supplies the release security headers
+ok 1 - Azure Static Web Apps response policy supplies the release security headers
+  ---
+  duration_ms: 3.968902
+  type: 'test'
+  ...
+# Subtest: Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+ok 2 - Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+  ---
+  duration_ms: 1.829001
+  type: 'test'
+  ...
+# Subtest: the Azure policy and _headers fallback cannot silently diverge
+ok 3 - the Azure policy and _headers fallback cannot silently diverge
+  ---
+  duration_ms: 1.5909
+  type: 'test'
+  ...
+# Subtest: the host rewrites a missing route to the product 404 document
+ok 4 - the host rewrites a missing route to the product 404 document
+  ---
+  duration_ms: 0.966401
+  type: 'test'
+  ...
+
+Running 2 tests using 2 workers
+
+# Subtest: every registered claim has exactly one tagged test
+ok 5 - every registered claim has exactly one tagged test
+  ---
+  duration_ms: 13.577407
+  type: 'test'
+  ...
+# Subtest: site setup links target the real README installation heading
+ok 6 - site setup links target the real README installation heading
+  ---
+  duration_ms: 12.128507
+  type: 'test'
+  ...
+# Subtest: catalog description is verb-first and no longer than 120 characters
+ok 7 - catalog description is verb-first and no longer than 120 characters
+  ---
+  duration_ms: 1.2743
+  type: 'test'
+  ...
+[1A[2K(node:13523) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13523) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/2] [mobile] › tests/site/site.spec.ts:54:1 › @claim:demo-sandbox isolates playback state and Reset restarts it
+[1A[2K[2/2] [chromium] › tests/site/site.spec.ts:54:1 › @claim:demo-sandbox isolates playback state and Reset restarts it
+[1A[2K  2 passed (4.4s)
+
+> restore-drill-workspace@0.1.0 test:site
+> playwright test --grep @claim:site-no-tracking
+
+[1A[2K[2m[WebServer] [22m(node:13704) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+TAP version 13
+# Subtest: Azure Static Web Apps response policy supplies the release security headers
+ok 1 - Azure Static Web Apps response policy supplies the release security headers
+  ---
+  duration_ms: 3.566302
+  type: 'test'
+  ...
+# Subtest: Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+ok 2 - Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+  ---
+  duration_ms: 2.082301
+  type: 'test'
+  ...
+# Subtest: the Azure policy and _headers fallback cannot silently diverge
+ok 3 - the Azure policy and _headers fallback cannot silently diverge
+  ---
+  duration_ms: 2.834802
+  type: 'test'
+  ...
+# Subtest: the host rewrites a missing route to the product 404 document
+ok 4 - the host rewrites a missing route to the product 404 document
+  ---
+  duration_ms: 1.2357
+  type: 'test'
+  ...
+
+Running 2 tests using 2 workers
+
+# Subtest: every registered claim has exactly one tagged test
+ok 5 - every registered claim has exactly one tagged test
+  ---
+  duration_ms: 22.281112
+  type: 'test'
+  ...
+# Subtest: site setup links target the real README installation heading
+ok 6 - site setup links target the real README installation heading
+  ---
+  duration_ms: 2.088901
+  type: 'test'
+  ...
+# Subtest: catalog description is verb-first and no longer than 120 characters
+ok 7 - catalog description is verb-first and no longer than 120 characters
+  ---
+  duration_ms: 1.647701
+  type: 'test'
+  ...
+[1A[2K(node:13742) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13743) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13742) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13743) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/2] [chromium] › tests/site/site.spec.ts:23:1 › @claim:site-no-tracking uses only a public first-party cache
+[1A[2K[2/2] [mobile] › tests/site/site.spec.ts:23:1 › @claim:site-no-tracking uses only a public first-party cache
+[1A[2K  2 passed (3.9s)
+
+> restore-drill-workspace@0.1.0 test:site
+> playwright test --grep @claim:offline-web-walkthrough
+
+[1A[2K[2m[WebServer] [22m(node:13926) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+TAP version 13
+# Subtest: Azure Static Web Apps response policy supplies the release security headers
+ok 1 - Azure Static Web Apps response policy supplies the release security headers
+  ---
+  duration_ms: 3.772402
+  type: 'test'
+  ...
+# Subtest: Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+ok 2 - Azure Static Web Apps response policy caches only fingerprinted assets and the versioned hero immutably
+  ---
+  duration_ms: 1.939901
+  type: 'test'
+  ...
+# Subtest: the Azure policy and _headers fallback cannot silently diverge
+ok 3 - the Azure policy and _headers fallback cannot silently diverge
+  ---
+  duration_ms: 2.091201
+  type: 'test'
+  ...
+# Subtest: the host rewrites a missing route to the product 404 document
+ok 4 - the host rewrites a missing route to the product 404 document
+  ---
+  duration_ms: 1.253501
+  type: 'test'
+  ...
+
+Running 2 tests using 2 workers
+
+# Subtest: every registered claim has exactly one tagged test
+ok 5 - every registered claim has exactly one tagged test
+  ---
+  duration_ms: 13.368706
+  type: 'test'
+  ...
+# Subtest: site setup links target the real README installation heading
+ok 6 - site setup links target the real README installation heading
+  ---
+  duration_ms: 3.924902
+  type: 'test'
+  ...
+# Subtest: catalog description is verb-first and no longer than 120 characters
+ok 7 - catalog description is verb-first and no longer than 120 characters
+  ---
+  duration_ms: 1.3511
+  type: 'test'
+  ...
+[1A[2K(node:13945) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13946) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13945) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:13946) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/2] [mobile] › tests/site/site.spec.ts:156:1 › @claim:offline-web-walkthrough demo reloads offline after its first visit
+[1A[2K[2/2] [chromium] › tests/site/site.spec.ts:156:1 › @claim:offline-web-walkthrough demo reloads offline after its first visit
+[1A[2K  2 passed (3.9s)

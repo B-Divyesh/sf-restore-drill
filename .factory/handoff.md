@@ -1,129 +1,84 @@
-# Restore Drill review 3 handoff
+# Restore Drill — polish 3 handoff
 
-## Review 3 outcome
+## Outcome
 
-Adversarial review 3 is complete. No product code was changed. The result is
-**FAIL**. The registered `real-docker-restore` command fails in this sandbox
-because Docker is not installed, and the Privacy page's offline-reading promise
-is not registered as a claim. The review also records two small plain-language
-findings. See `.factory/review-3.md` for exact evidence and fixes.
+**PASS.** All findings in `.factory/review-1.md`, `.factory/review-2.md`, and
+`.factory/review-3.md` are resolved and mapped in `.factory/polish-3.md`.
+Restore Drill is live at <https://restore-drill.sociobot.in/>; the deployed
+static release is `dc1b99bd-7acb-4805-9208-3c712c6d764d`.
 
-The review used fresh 390 px and 1440 px production contexts, a clean clone at
-`996c188fccf7ceae5772e9358862cb5cf597c4df`, and live evidence under
-`/tmp/restore-drill-review3-live`. `npm test`, `npm run build`, nine registered
-claim commands, and the live browser verifier passed. The failed command was:
+## Delivered
+
+- Registered and tested the privacy-page offline-reading promise.
+- Kept the direct Docker/Postgres restore acceptance test and verified it on a
+  clean hosted runner with a real Docker daemon.
+- Replaced the vague demo-exit label with **View installation steps** and
+  replaced jargon with **signed report you can check later**.
+- Fixed a clean-tree test-order issue: the distribution assertion now waits for
+  its documented build command instead of requiring a pre-existing `dist/`.
+- Rechecked the isolated `?demo=1` walkthrough, reset, route titles, metadata,
+  404, legal links, focus behavior, mobile layout, privacy boundaries, and the
+  halftone field-report visual system.
+- Corrected the shared footer build marker to `build polish3` on every route.
+
+## Verification
+
+### Claims from a clean checkout
+
+A fresh checkout at `50ba2266b1aaf4326759f1fd4b16372133bbebf9` ran `npm ci`
+and every non-Docker command in `.factory/claims.json`. The exact transcript is
+`.factory/evidence/polish-3/clean-claim-tests.log`:
+
+- `production-boundary`
+- `automation-contract`
+- `local-io-boundary`
+- `image-pull`
+- `distribution-build`
+- `weekly-scheduling`
+- `mit-license`
+- `demo-sandbox`
+- `site-no-tracking`
+- `offline-web-walkthrough`
+
+The remaining registered claim, `real-docker-restore`, passed on GitHub's clean
+Ubuntu Docker runner at
+<https://github.com/B-Divyesh/sf-restore-drill/actions/runs/33178287693>. It
+ran the exact command below against a real Docker daemon and checked a healthy
+three-row restore, corrupt-backup failure, report signature, and cleanup:
 
 ```sh
 cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored
 ```
 
-It requires a Docker CLI and daemon. Provision that verification environment,
-register/tag the offline assertion, and resolve the two copy findings before a
-PASS review.
+### Local quality gates
 
-## Prior polish 2 handoff (superseded by review 3)
-
-## Outcome
-
-All findings in `.factory/review-1.md`, `.factory/polish-1.md`, and
-`.factory/review-2.md` are resolved. The complete 66-finding mapping is in
-`.factory/polish-2.md`. No known gaps remain.
-
-The release is live at <https://restore-drill.sociobot.in/>. Static deployment
-ID: `0b00eaac-8e8b-4bfe-8cfa-e3be42c87c0e`.
-
-## Delivered
-
-- Rewrote the first screen around the restore job, the small-team audience,
-  one sample action, its outcome, and three short facts.
-- Replaced the fixed mock terminal with a timed walkthrough exported from an
-  actual Docker/Postgres run. `/demo/?demo=1` starts it directly.
-- Added a persistent demo banner, demo-only `sessionStorage`, Reset, Start for
-  real, an inspectable signed report, and a report download.
-- Added a real-Docker claim test covering a successful three-row restore, a
-  corrupt backup failure, signature verification, and cleanup after both.
-- Fixed the Postgres readiness race found by that real-daemon test.
-- Added ten claims to `.factory/claims.json`, each with exactly one tagged
-  observable test.
-- Added JSON/exit-code, boundary, local-I/O, image-pull, distribution, weekly
-  schedule, MIT-license, and no-tracking coverage.
-- Completed route-specific titles, descriptions, canonical/Open Graph/Twitter
-  metadata, focus announcements, Back navigation, legal links, and the real
-  styled 404 response.
-- Fixed 390 px terminal wrapping, 44 px targets, mobile Axe coverage, offline
-  reload, and storage/privacy assertions.
-- Added complete source installation and scheduling examples without claiming
-  that release binaries exist.
-- Preserved the halftone field-report identity and its ink, paper, and
-  vermilion palette.
-- Updated the README, CHANGELOG, demo/design/copy documentation, catalog line,
-  and this handoff.
-
-## Verification evidence
-
-### Real Docker acceptance
-
-GitHub Actions run
-<https://github.com/B-Divyesh/sf-restore-drill/actions/runs/33173322960>
-passed on commit `0e220c7871a7bcf154e252a3a41f6f4822069c3e`.
-It ran the exact `real-docker-restore` claim command on a real Docker daemon.
-The exported report records `status: passed`, `observed: 3`, and an 88-character
-signature. The same report verifies with the release CLI.
-
-### Clean checkout
-
-The clean checkout at `0e220c7871a7bcf154e252a3a41f6f4822069c3e`
-passed every command in `.factory/claims.json`. Exact output is stored in
-`.factory/evidence/polish-2/clean-claim-tests.log`.
-
-It also passed:
-
-- `npm test`: 4 Rust unit tests, 7 CLI integration tests, 3 Node claim tests,
-  7 policy tests, and 20 Playwright tests across desktop and 390 px mobile.
-- `npm run check:types`.
-- `npm run check:lint`, including `cargo fmt` and Clippy with warnings denied.
-- `npm run build`, producing `dist/bin/restore-drill-linux-x86_64` and
-  `dist/site/`.
+- `npm test`: passed — 4 Rust unit tests, 7 CLI integration tests, 3 Node
+  claim tests, 7 policy tests, and 20 desktop/mobile Playwright tests.
+- `npm run check:types`, `npm run check:lint`, and `npm run build`: passed.
 - `cargo package --manifest-path crates/restore-drill/Cargo.toml --allow-dirty`:
-  112.3 KiB unpacked and 28.8 KiB compressed.
+  passed; 112.3 KiB unpacked and 28.8 KiB compressed.
+- Static output: 4.31 kB JavaScript (1.92 kB gzip) and 14.24 kB CSS (3.93 kB
+  gzip).
 
-Full output is in `.factory/evidence/polish-2/clean-full-suite.log`.
+Final command logs are in `.factory/evidence/polish-3/`.
 
-### Deployed site
+### Cold production audit
 
 `npm run test:live -- https://restore-drill.sociobot.in/
-.factory/evidence/live-polish-2` passed cold against production. It checked
-Home, Demo, Privacy, Terms, and an unknown route; route titles and metadata;
-one h1 and main landmark; responsive width; serious/critical Axe results;
-demo playback and Reset; isolated session state; report data; service-worker
-cache; offline reload; external requests; and console output.
+.factory/evidence/live-polish-3` and `/opt/fleet/lib/verify-url.sh` both
+passed after the final deployment. They covered Home, Demo, Privacy, Terms,
+the designed 404 response, route metadata, one H1/main landmark, responsive
+390 px rendering, keyboard/focus behavior, sample reset, isolated demo storage,
+service-worker cache, offline reload, report signature, same-origin requests,
+and console output. Axe reported zero serious or critical issues on every
+tested route.
 
-Results:
+Lighthouse 12.8.2 (mobile, production) scored Performance 100, Accessibility
+100, Best Practices 100, and SEO 100. FCP was 0.8 s, LCP 1.7 s, CLS 0, and TBT
+10 ms. Screenshots, JSON reports, and the live audit transcript are in
+`.factory/evidence/live-polish-3/`.
 
-- Home, Demo, Privacy, and Terms: HTTP 200 and zero serious/critical Axe issues.
-- Unknown route: HTTP 404 with the designed Restore Drill page.
-- External requests during the tested flow: zero.
-- IndexedDB databases: zero; service workers: one; cache:
-  `restore-drill-shell-v3`; demo state exists only in `sessionStorage`.
-- Expected browser console entry: the deliberately requested unknown route's
-  HTTP 404 only.
-- `/opt/fleet/lib/verify-url.sh`: title, language, h1, main, image alt,
-  button names, and console checks passed in 851 ms.
-
-Lighthouse 12.8.2 mobile scores against production:
-
-- Performance: 100
-- Accessibility: 100
-- Best practices: 100
-- SEO: 100
-- FCP: 0.9 s; LCP: 1.7 s; CLS: 0; total blocking time: 50 ms
-
-The production build ships 4.31 kB JavaScript and 14.24 kB CSS before gzip
-(1.92 kB and 3.93 kB gzip). Live JSON, screenshots, and Lighthouse output are
-under `.factory/evidence/live-polish-2/`. Review screenshots are under
-`.factory/evidence/polish-2/`.
-
-## Run and verify
+## Run, package, and deploy
 
 ```sh
 npm ci
@@ -131,29 +86,20 @@ npm test
 npm run check:types
 npm run check:lint
 npm run build
-npm run test:live -- https://restore-drill.sociobot.in/ .factory/evidence/live-polish-2
+npm run test:live -- https://restore-drill.sociobot.in/ .factory/evidence/live-polish-3
+cargo package --manifest-path crates/restore-drill/Cargo.toml --allow-dirty
 ```
 
-The real Docker claim needs a Docker daemon and may pull
-`postgres:16-alpine`:
+For a Docker-capable machine, run the real restore claim shown above. The
+publish-ready crate is produced by `cargo package`; do not publish from this
+worktree. Static deployment uses:
 
 ```sh
-cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored
-```
-
-Deployment used the work-order commands:
-
-```sh
-npm ci
 npm run build:site
 /opt/fleet/lib/deploy-static.sh restore-drill dist/site
 ```
 
 ## Known gaps
 
-- The real-Docker claim did not run in the current review sandbox because no
-  Docker executable or daemon exists.
-- “A first-party service worker caches public site files for offline reading”
-  is an unlisted claim.
-- “Start for real” and “tamper-evident report” need the concrete copy rewrites
-  recorded in `.factory/review-3.md`.
+None. The local nested container cannot run Docker due kernel privileges, but
+the exact Docker acceptance command passed in the hosted clean Docker runner.

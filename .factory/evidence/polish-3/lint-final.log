@@ -1,0 +1,5 @@
+
+> restore-drill-workspace@0.1.0 check:lint
+> cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings
+
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.20s
