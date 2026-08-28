@@ -1,5 +1,17 @@
 # Restore Drill v0.1.0 handoff
 
+> ## Independent verifier update — **FAIL** (2026-08-28 UTC)
+>
+> Candidate `51be449960dbc92e7c4aa1b37cb484c7516756e6` was clean-built and
+> byte-for-byte matched by https://restore-drill.sociobot.in/. Functional CLI,
+> package-consumer, browser, mobile, accessibility, privacy, and offline-PWA
+> checks passed. **Do not release yet:** the live host does not apply the
+> checked-in CSP, Permissions-Policy/frame protection, or immutable cache
+> headers; it serves all tested responses as `max-age=30`. A Docker executable
+> and daemon were unavailable in this verifier container, so a real Postgres
+> restore remains required on a Docker-capable host. Full fresh evidence and
+> release conditions are in `.factory/verification.md`.
+
 ## What shipped
 
 - A Rust single-binary CLI with `init`, `check`, `run`, and `verify` commands,
