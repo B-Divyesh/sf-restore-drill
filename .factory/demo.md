@@ -5,25 +5,38 @@
 - Web: `https://restore-drill.sociobot.in/demo/?demo=1`
 - CLI: `restore-drill demo`
 
-The web route shows the exact command, its sample data, and the expected report
-path. Its persistent banner identifies the sample and offers **Reset demo** and
-**Start for real**.
+The web route immediately replays a recorded run of the real binary. It links
+the signed JSON report created by that run. The persistent banner identifies
+sample mode and provides **Reset demo** and **Start for real**.
 
-## Isolation
+## Browser isolation
 
-`restore-drill demo` creates a directory named `restore-drill-demo-*` below the
-system temporary directory. It writes a copy of `examples/sample-backup.sql`, a
-sample configuration, credentials, signing key, and report only there. It never
-reads a caller configuration or backup. Docker resources use the usual
-`restore-drill-*` disposable names and are removed by the normal drill cleanup.
+Playback progress uses only the `demo:restore-drill:playback` session-storage
+key. The page never reads or writes application data. **Reset demo** clears all
+`demo:restore-drill:*` session keys and restarts the recording. **Start for
+real** clears the same namespace and opens the source-install section.
 
-The command prints the temporary directory. Removing that directory discards all
-demo files. Resetting the web walkthrough reloads its static sample state; the
-site does not store demo data in browser storage.
+The recording and report are public, read-only files under `site/public/demo/`.
+They are available offline after the first visit through the first-party site
+cache. That cache contains public site assets only.
 
-## Sample
+## CLI isolation
 
-The sample is a plain Postgres SQL backup containing three fictional orders. Its
-SQL assertion expects a count of three after restoration. The source files ship
-under `examples/` and the Rust integration test exercises the same bundled
-files through the normal drill pipeline.
+`restore-drill demo` creates `restore-drill-demo-*` below the system temporary
+directory. It writes the shipped backup, configuration, credentials, signing
+key, and report only there. It never reads a caller configuration or backup.
+Docker resources carry `in.sociobot.restore-drill=managed` and are removed by
+the normal cleanup path after both passing and failing drills.
+
+## Sample and recording provenance
+
+The sample is a plain Postgres SQL backup with three fictional orders. Its SQL
+check expects a count of three after restoration. The source files ship under
+`examples/` and `crates/restore-drill/examples/`.
+
+The `Real Docker claim` GitHub Actions workflow runs the healthy and corrupt
+samples against `postgres:16-alpine` on a real Docker daemon. It then runs
+`scripts/capture-real-demo.mjs`, which executes the release CLI again and
+exports the successful transcript and signed report. Temporary paths and the
+host-dependent elapsed time are replaced in the transcript; the report stays
+unaltered so its Ed25519 signature remains verifiable.

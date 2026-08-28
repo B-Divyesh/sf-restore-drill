@@ -13,11 +13,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - name: Run real Postgres restore claim
+        env:
+          RESTORE_DRILL_CAPTURE_DIR: site/public/demo
         run: cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored
-      - name: Capture the real demo for the web walkthrough
-        run: |
-          cargo build --release --locked --package restore-drill
-          node scripts/capture-real-demo.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: real-demo-evidence

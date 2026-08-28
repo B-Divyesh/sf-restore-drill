@@ -69,7 +69,7 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
 
     let demo_parent = tempfile::tempdir().unwrap();
     let healthy = Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
-        .args(["demo", "--json"])
+        .arg("demo")
         .env("TMPDIR", demo_parent.path())
         .output()
         .unwrap();
@@ -78,10 +78,6 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
         "{}",
         String::from_utf8_lossy(&healthy.stderr)
     );
-    let healthy_report: Value = serde_json::from_slice(&healthy.stdout).unwrap();
-    assert_eq!(healthy_report["status"], "passed");
-    assert_eq!(healthy_report["assertions"][0]["observed"], "3");
-    assert!(healthy_report["signature"].as_str().unwrap().len() > 40);
     let demo_root = fs::read_dir(demo_parent.path())
         .unwrap()
         .next()
@@ -89,6 +85,10 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
         .unwrap()
         .path();
     let healthy_path = only_report_in(&demo_root);
+    let healthy_report: Value = serde_json::from_slice(&fs::read(&healthy_path).unwrap()).unwrap();
+    assert_eq!(healthy_report["status"], "passed");
+    assert_eq!(healthy_report["assertions"][0]["observed"], "3");
+    assert!(healthy_report["signature"].as_str().unwrap().len() > 40);
     Command::new(assert_cmd::cargo::cargo_bin!("restore-drill"))
         .args(["verify"])
         .arg(&healthy_path)
@@ -97,6 +97,34 @@ fn real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup() {
         .assert()
         .success();
     assert_no_managed_resources();
+
+    if let Ok(capture_dir) = std::env::var("RESTORE_DRILL_CAPTURE_DIR") {
+        let capture_dir = PathBuf::from(capture_dir);
+        fs::create_dir_all(&capture_dir).unwrap();
+        fs::copy(&healthy_path, capture_dir.join("sample-report.json")).unwrap();
+        let root_text = demo_root.display().to_string();
+        let frames: Vec<Value> = String::from_utf8_lossy(&healthy.stderr)
+            .lines()
+            .map(|line| {
+                let mut text = line.replace(&root_text, "/tmp/restore-drill-demo-…");
+                if let (Some(start), Some(end)) = (text.find(" in "), text.find(" — report ")) {
+                    text.replace_range(start + 4..end, "<measured time>");
+                }
+                serde_json::json!({"text": text, "delay_ms": 420})
+            })
+            .collect();
+        let recording = serde_json::json!({
+            "command": "restore-drill demo",
+            "source": std::env::var("GITHUB_SHA").unwrap_or_else(|_| "local-real-docker-run".into()),
+            "captured_at": healthy_report["finished_at"],
+            "frames": frames
+        });
+        fs::write(
+            capture_dir.join("demo-recording.json"),
+            format!("{}\n", serde_json::to_string_pretty(&recording).unwrap()),
+        )
+        .unwrap();
+    }
 
     let broken_root = tempfile::tempdir().unwrap();
     fs::write(

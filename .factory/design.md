@@ -47,19 +47,19 @@ The desktop hero is an asymmetric two-column broadsheet: decisive copy at left,
 the test-chamber illustration at right. Evidence is presented as ruled log rows,
 not a grid of interchangeable cards. Labels are uppercase and tracked like
 inspection marks; buttons are rectangular, slightly offset on press, and at
-least 44 px tall. On a 390 px phone, navigation collapses to the essential buy
-action, the hero stacks, the decorative crop is reduced, and log rows become
-label/value pairs without horizontal scrolling.
+least 44 px tall. On a 390 px phone, navigation collapses, the hero stacks, the
+decorative crop is reduced, and terminal lines wrap without horizontal
+scrolling.
 
-Async states use the report metaphor: `checking…`, `verified`, `offline—cached
-license retained`, and a plain next step. The live drill preview is keyboard
-operable; results are announced through a polite live region.
+The web walkthrough uses a dark evidence terminal and a paper report slip. Its
+playback can be paused or restarted, its output region is keyboard focusable,
+and new lines are announced through a polite live region.
 
 ## Motion policy
 
-Only state changes move. The hero's three chamber layers register into place
-once (220–420 ms, transform + opacity), buttons depress by 2 px, and drill rows
-reveal in sequence after the user starts the preview. Nothing loops. Under
+Only state changes move. The hero registers into place once (500 ms, transform
+and opacity), buttons depress by 2 px, and recorded lines appear in sequence.
+Nothing loops. Under
 `prefers-reduced-motion: reduce`, transforms and sequencing are removed and all
 states switch instantly using opacity or direct replacement.
 
