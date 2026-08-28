@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths-ignore:
+      - 'site/public/demo/**'
+      - '.factory/**'
 
 jobs:
   real-docker-restore:
