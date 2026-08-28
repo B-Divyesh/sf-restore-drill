@@ -50,3 +50,19 @@ test('catalog description is verb-first and no longer than 120 characters', asyn
   assert.ok(description.startsWith('Prove '));
   assert.ok(description.length <= 120, `catalog description is ${description.length} characters`);
 });
+
+test('the real Docker release gate cannot accept stale or evidence-free runs', async () => {
+  const [claims, packageJson, workflow, verifier] = await Promise.all([
+    readFile(resolve(root, '.factory/claims.json'), 'utf8'),
+    readFile(resolve(root, 'package.json'), 'utf8'),
+    readFile(resolve(root, '.github/workflows/real-docker-claim.yml'), 'utf8'),
+    readFile(resolve(root, 'scripts/verify-real-docker-claim.mjs'), 'utf8')
+  ]);
+  assert.match(claims, /"test": "npm run test:docker"/);
+  assert.match(packageJson, /"test:docker:local": "cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored"/);
+  assert.match(workflow, /run: npm run test:docker:local/);
+  assert.match(verifier, /git\(\['status', '--porcelain'\]\)/);
+  assert.match(verifier, /step\?\.conclusion !== 'success'/);
+  assert.match(verifier, /artifact\.expired/);
+  assert.match(verifier, /documentationOnlySince\(run\.head_sha\)/);
+});

@@ -73,7 +73,9 @@ npm run build
 cargo package --manifest-path crates/restore-drill/Cargo.toml --allow-dirty
 ```
 
-`npm run test:docker` needs a real Docker daemon and pulls Postgres 16 Alpine.
+`npm run test:docker` uses a local Docker daemon when one is available. Otherwise,
+it checks the matching clean hosted run and its evidence artifact. The hosted
+runner executes `npm run test:docker:local` against Postgres 16 Alpine.
 `npm run build` writes the executable Linux CLI to `dist/bin/` and the complete
 static site to `dist/site/`.
 

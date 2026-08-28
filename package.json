@@ -15,7 +15,8 @@
     "test:policies": "node --test tests/site/*.test.mjs",
     "test:site": "playwright test",
     "test:live": "node scripts/verify-live.mjs",
-    "test:docker": "cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored",
+    "test:docker": "node scripts/verify-real-docker-claim.mjs",
+    "test:docker:local": "cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored",
     "test:claims": "node --test tests/claims.test.mjs",
     "test": "cargo test --workspace && npm run test:claims && npm run test:policies && npm run test:site"
   },

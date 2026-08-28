@@ -87,7 +87,7 @@ test('every route has complete route-specific metadata and product chrome', asyn
     await expect(page).toHaveTitle(title);
     await expect(page.locator('header')).toHaveCount(1);
     await expect(page.locator('footer')).toHaveCount(1);
-    await expect(page.locator('footer')).toContainText('build polish4');
+    await expect(page.locator('footer')).toContainText('build polish5');
     await expect(page.locator('main')).toHaveCount(1);
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);

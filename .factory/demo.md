@@ -35,7 +35,7 @@ The sample is a plain Postgres SQL backup with three fictional orders. Its SQL
 check expects a count of three after restoration. The source files ship under
 `examples/` and `crates/restore-drill/examples/`.
 
-The `Real Docker claim` test runs the healthy and corrupt samples against
+The `real-docker-restore` claim runs the healthy and corrupt samples against
 `postgres:16-alpine` on a real Docker daemon. When
 `RESTORE_DRILL_CAPTURE_DIR` is set, that same test exports the successful
 transcript and signed report. Temporary paths and the host-dependent elapsed

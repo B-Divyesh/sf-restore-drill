@@ -6,7 +6,10 @@ on:
     branches: [main]
     paths-ignore:
       - 'site/public/demo/**'
-      - '.factory/**'
+      - '.factory/evidence/**'
+      - '.factory/handoff.md'
+      - '.factory/polish-*.md'
+      - '.factory/review-*.md'
 
 jobs:
   real-docker-restore:
@@ -18,7 +21,7 @@ jobs:
       - name: Run real Postgres restore claim
         env:
           RESTORE_DRILL_CAPTURE_DIR: ${{ github.workspace }}/site/public/demo
-        run: cargo test --workspace real_docker_demo_restores_and_corrupt_dump_fails_with_cleanup -- --ignored
+        run: npm run test:docker:local
       - uses: actions/upload-artifact@v4
         with:
           name: real-demo-evidence
