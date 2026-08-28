@@ -10,12 +10,16 @@
     "build:site": "vite build --config site/vite.config.ts",
     "build": "npm run clean && npm run build:cli && npm run build:site",
     "clean": "node scripts/clean.mjs",
+    "check:types": "tsc -p site/tsconfig.json --noEmit",
+    "check:lint": "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
+    "test:policies": "node --test tests/site/response-policy.test.mjs",
     "test:site": "playwright test",
-    "test": "cargo test --workspace && npm run test:site"
+    "test": "cargo test --workspace && npm run test:policies && npm run test:site"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",
     "@playwright/test": "1.58.2",
+    "typescript": "5.9.3",
     "vite": "7.3.6"
   }
 }
