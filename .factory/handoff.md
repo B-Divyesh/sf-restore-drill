@@ -1,16 +1,18 @@
 # Restore Drill v0.1.0 handoff
 
-> ## Independent verifier update — **FAIL** (2026-08-28 UTC)
+> ## Repair verification — **PASS** (2026-08-28 UTC)
 >
-> Candidate `51be449960dbc92e7c4aa1b37cb484c7516756e6` was clean-built and
-> byte-for-byte matched by https://restore-drill.sociobot.in/. Functional CLI,
-> package-consumer, browser, mobile, accessibility, privacy, and offline-PWA
-> checks passed. **Do not release yet:** the live host does not apply the
-> checked-in CSP, Permissions-Policy/frame protection, or immutable cache
-> headers; it serves all tested responses as `max-age=30`. A Docker executable
-> and daemon were unavailable in this verifier container, so a real Postgres
-> restore remains required on a Docker-capable host. Full fresh evidence and
-> release conditions are in `.factory/verification.md`.
+> Repair commit `8dd45ba0fadb0108d34d0a1366eb1c74f503d7eb` resolves the one
+> independent-verifier release blocker in candidate
+> `51be449960dbc92e7c4aa1b37cb484c7516756e6`. Azure Static Web Apps does not
+> read the `_headers` convention, so the deployable site now contains its native
+> `staticwebapp.config.json`. The public host now returns the required CSP,
+> Permissions-Policy, `X-Frame-Options: DENY`, and immutable cache controls for
+> fingerprinted assets and the hero. The original CLI and landing-page behavior
+> remain covered and passing. A Docker executable and daemon are still absent in
+> this worker, so the existing requirement for one live representative restore
+> and corrupt-artifact run on a Docker-capable host remains operational
+> acceptance work, not a release-policy defect.
 
 ## What shipped
 
@@ -32,7 +34,9 @@
   to be mode `0600` on Unix. `init` creates them with that mode.
 - A responsive static landing/docs site at `dist/site`, including the interactive
   healthy/broken drill preview, offline shell, install/run documentation, legal
-  pages, security/cache headers, and a $39 one-time Team Kit unlock.
+  pages, security/cache headers, and a $39 one-time Team Kit unlock. The static
+  root includes Azure-native `staticwebapp.config.json`; `_headers` remains as a
+  portable fallback for hosts that support it.
 - The paid flow uses only Sociobot's product-slug checkout and verify endpoints,
   stores `sb_license:restore-drill`, strips returned tokens from the URL, caches
   successful verification for at most one day, preserves a prior valid verdict
@@ -59,6 +63,8 @@ runtime CDNs, analytics, or tracking are present.
 ```sh
 npm ci
 npm test
+npm run check:types
+npm run check:lint
 npm run build
 cargo package --manifest-path crates/restore-drill/Cargo.toml --allow-dirty
 ```
@@ -69,22 +75,43 @@ Build output:
 - Release binary: `dist/bin/restore-drill-linux-x86_64`
 - Ready-to-publish crate: `target/package/restore-drill-0.1.0.crate`
 
-Verification completed on 2026-08-27:
+Repair verification completed on 2026-08-28:
 
-- Rust: 7 tests passed (config safety, unsafe archive rejection, production URL
-  rejection, signature tampering, CLI help/init, full simulated-engine success,
-  deliberately broken restore, signed report verification, and teardown checks).
-- Playwright 1.58.2: 9 passed, 1 intentional duplicate mobile axe pass skipped;
-  desktop Chromium and a 390×844 touch viewport were exercised.
-- Axe/WCAG 2 A/AA/2.1 AA: no serious or critical findings.
-- `/opt/fleet/lib/verify-url.sh`: HTTP 200, title/lang/main present, one `h1`, no
-  missing alt text, no unlabeled buttons, and zero console/page errors.
-- Lighthouse 13 mobile: performance **99**, accessibility **100**, best practices
-  **100**, SEO **100**; FCP 0.9 s, LCP 2.0 s, CLS 0, TBT 0 ms.
-- Production payload: 6.63 KB JS, 11.00 KB CSS, no font payload, 181.36 KB hero.
-- `cargo clippy --workspace --all-targets -- -D warnings`: passed.
-- `npm audit --audit-level=high`: 0 vulnerabilities.
-- `cargo package`: passed, 25.6 KB compressed crate.
+- Clean `npm ci`, `npm test`, `npm run check:types`, `npm run check:lint`,
+  `npm run build`, `cargo package --allow-dirty`, and
+  `npm audit --audit-level=high` passed. Rust: 7 tests; policy regression suite:
+  3 tests; Playwright 1.58.2: 9 passed and 1 intentional duplicate mobile axe
+  pass skipped.
+- The new policy regression suite asserts Azure's exact global CSP,
+  Permissions-Policy, referrer/content-type/frame headers; both immutable cache
+  routes; no immutable HTML route; and no divergence from `_headers`.
+- The packaged `restore-drill-0.1.0.crate` was extracted into a clean consumer
+  directory and installed with `cargo install --path ... --locked`. Its help
+  exposes the documented commands, `init` created the credential file at mode
+  `0600`, duplicate `init` exited `2`, and `check` against the starter's missing
+  backup exited `2`.
+- Live identity: the deployed `index.html` SHA-256 is
+  `364732a37da4df3944d449b7faa56149821029af65bb4a95b142481470fbc8a7` and the
+  hero SHA-256 is
+  `d14467c5d1d117d8a9ff3b46d8766473fe4498e765c50f70b983e4b17af71fe4`, matching
+  this build byte-for-byte.
+- Live response policy: `/` returns the CSP, Permissions-Policy, referrer
+  policy, `nosniff`, and `X-Frame-Options: DENY`; the fingerprinted 6,625-byte JS
+  and 181,360-byte hero return
+  `Cache-Control: public, max-age=31536000, immutable` plus the same security
+  policy. HTML remains revalidatable at `max-age=30`.
+- Live `/opt/fleet/lib/verify-url.sh` passed: HTTP 200, 762 ms load, title/lang,
+  one `h1`, `main`, no missing image alt text or unlabeled buttons, and zero page
+  or console errors. A direct live Playwright check found no third-party
+  requests, no 390×844 overflow, a focused skip link on first Tab, a controlling
+  service worker with a working offline reload, and zero serious/critical Axe
+  WCAG 2 A/AA/2.1 AA violations.
+- Production payload: 6.63 KB JS, 11.00 KB CSS, no font payload, and a 181.36 KB
+  hero. `cargo package` produced a 25.6 KB compressed crate.
+- Lighthouse 13.4.1 was retried with the preinstalled Chromium. It still cannot
+  complete in this container because Chrome's tab crashes; browser, payload, and
+  accessibility checks above completed independently. The prior verifier run
+  recorded 99 performance, 100 accessibility, 100 best practices, and 100 SEO.
 
 ## Known gaps and release steps
 
