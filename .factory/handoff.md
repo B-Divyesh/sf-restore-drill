@@ -1,67 +1,47 @@
-# Restore Drill polish 1 handoff
+# Restore Drill review 2 handoff
 
 ## Delivered
 
-Commit `ebe1c9fdfe5ab23ae6b168607616af28c354874e` repairs every copy, route,
-demo, metadata, mobile target, legal-chrome, and claims-registry issue recorded
-in review 1.
+- Wrote `.factory/review-2.md` for candidate
+  `07f624e2eee54bd2eeb1d8119c62df0bb6a23e4d`.
+- Verdict: **FAIL**.
+- No product code was modified.
 
-- `restore-drill demo` now runs the bundled three-order SQL sample through the
-  normal drill pipeline from a fresh system temporary directory.
-- `/demo/?demo=1` is a direct sample walkthrough with a persistent isolation
-  banner, reset control, and start-real link.
-- The landing page now states the audience, job, and one evaluation action in
-  the first screen. The unregistered paid offer and untestable marketing claims
-  were removed.
-- Real `/demo/`, `/privacy/`, `/terms/`, and product-owned 404 documents ship
-  with titles, canonical/social metadata, favicon, touch icon, shared chrome,
-  focus behavior, and static-host 404 override.
-- Claim evidence is in `.factory/claims.json`; the complete finding-by-finding
-  mapping is in `.factory/polish-1.md`.
+## Verification performed
 
-## Verification
+- Opened the live home cold in fresh Chromium contexts at 390 × 844 and
+  1440 × 900.
+- Exercised the live demo, Reset, browser storage, same-origin requests, service
+  worker cache, offline reload, deep links, Back, 404, metadata, touch sizes,
+  and Axe at desktop/mobile on every HTML route.
+- Crawled every same-origin link and checked the two GitHub fragment links.
+- Ran every `.factory/claims.json` command from clean clone
+  `/tmp/restore-drill-review2-clean-oGI5ma/repo`; all command invocations passed.
+- Ran `npm test` from that clone: 13 Playwright tests passed, 1 mobile Axe pass
+  was intentionally skipped, and all Rust/Node tests passed.
+- Ran `npm run build`; it produced `dist/bin/restore-drill-linux-x86_64` and
+  `dist/site/`.
+- Ran `npm run check:types`, `npm run check:lint`, and Cargo packaging; all
+  passed.
+- Ran `/opt/fleet/lib/verify-url.sh` against the live home; it passed.
+- Ran the built `restore-drill demo` from a fresh temporary directory. It exited
+  `2` at the Docker prerequisite because this worker has no Docker executable,
+  daemon, or socket.
 
-From a separate clean clone at `/tmp/restore-drill-clean`:
+## Blocking gaps
 
-```sh
-npm ci
-npm test                         # 13 passed, 1 intentional duplicate axe skip
-npm run check:types
-npm run check:lint
-npm run build                    # dist/bin + dist/site
-cargo package --manifest-path crates/restore-drill/Cargo.toml --allow-dirty
-```
+- The one-click web demo is a fixed transcript, not a replay of a verified real
+  run, and it does not expose the promised signed report.
+- No real Docker/Postgres restore has been executed; the claim test uses a
+  shell-script substitute.
+- The mobile demo transcript fails Axe's serious
+  `scrollable-region-focusable` rule.
+- The no-tracking test omits its declared service-worker/IndexedDB assertions;
+  the live site registers a service worker and Cache Storage.
+- Several README claims remain outside the claims registry or are incompletely
+  tested.
+- Route social metadata is incomplete, both setup links target missing GitHub
+  anchors, and Terms says binaries are available although no release exists.
 
-All four commands in `.factory/claims.json` passed from that clean clone. The
-package verification passed with the bundled demo data included in the crate.
-The static build is 1.85 KB gzip JavaScript and 3.57 KB gzip CSS. Screenshots:
-
-- `.factory/evidence/home-390.png`
-- `.factory/evidence/demo-1440.png`
-- `.factory/evidence/404-390.png`
-
-## Run and deploy
-
-```sh
-npm ci
-npm test
-npm run build
-/opt/fleet/lib/deploy-static.sh restore-drill dist/site
-```
-
-Deployment completed through `/opt/fleet/lib/deploy-static.sh restore-drill
-dist/site` (Azure deployment `b74ee18e-1c5a-44fc-8c39-0258dc95644a`). Cold
-checks on 2026-08-28 returned 200 for `/`, `/demo/?demo=1`, `/privacy/`, and
-`/terms/`; `/does-not-exist` returned the product 404 with HTTP 404. Live
-Playwright found one h1/main, expected titles, no page errors, no third-party
-requests, and zero serious/critical axe findings. After service-worker control,
-an offline reload of `/demo/?demo=1` retained its title, h1, and demo banner.
-Use `restore-drill demo` on a Docker host for the real sample drill.
-
-## Known environment limitation
-
-This worker image has no `docker` executable or daemon/socket. The demo and
-existing integration test exercise the normal command flow with a
-Docker-compatible harness, including report signing and cleanup. A real Docker
-daemon run remains required operational evidence; it cannot be truthfully
-executed in this container. No product behavior is stubbed for that limitation.
+See `.factory/review-2.md` for exact evidence, rewrites, the full copy audit,
+and finding-by-finding verification of review 1.
